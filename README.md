@@ -1,6 +1,6 @@
 ### Hi there 👋, my name is Nikolay
 #### I am an aspiring Game Developer
-![I am an aspiring Game Developer](https://arturssmirnovs.github.io/github-profile-readme-generator/images/banner.png)
+![I am an aspiring Game Developer]([https://twitter.com/nikolaytabalyov/header_photo])
 
 I love making games in Unity and upping my abilities in it. I enjoy learning new concepts, languages and improving at the those I already use. Also I'm getting into digital art for games.
 
