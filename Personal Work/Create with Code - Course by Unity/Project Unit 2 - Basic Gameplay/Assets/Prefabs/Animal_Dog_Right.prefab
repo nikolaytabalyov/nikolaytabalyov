@@ -1973,7 +1973,6 @@ GameObject:
   - component: {fileID: 4467365336836791443}
   - component: {fileID: 6836827369769472736}
   - component: {fileID: 7925042495280028721}
-  - component: {fileID: 1410110245428519945}
   m_Layer: 0
   m_Name: Animal_Dog_Right
   m_TagString: Untagged
@@ -2100,18 +2099,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.18452089, y: 0.29235286, z: 0.3528085}
   m_Center: {x: 0.0033697742, y: 0.09772274, z: 0.013579057}
---- !u!114 &1410110245428519945
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3349033606345172074}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0449e23650c75b34dbb5dc5213d3e375, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &3550771982278186445
 GameObject:
   m_ObjectHideFlags: 0

@@ -22,7 +22,7 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         GetInputAndMove();
-        
+
         KeepPlayerInbounds();
 
         ShootProjectiles();
@@ -59,6 +59,6 @@ public class PlayerController : MonoBehaviour
     {
         //fire projectile on key input
         if (Input.GetKeyDown(KeyCode.Space))
-            Instantiate(projectilePrefab, transform.position, projectilePrefab.transform.rotation);
+            Instantiate(projectilePrefab, transform.position + new Vector3(0, 0, 2), projectilePrefab.transform.rotation);
     }
 }
