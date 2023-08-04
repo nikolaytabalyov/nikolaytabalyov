@@ -3,7 +3,11 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Ground
+  - Wall
+  - Background
+  - Ceiling
   layers:
   - Default
   - TransparentFX
@@ -40,4 +44,10 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Walls And Ground
+    uniqueID: 497411009
+    locked: 0
+  - name: Player and Enemies
+    uniqueID: 3769481525
     locked: 0
