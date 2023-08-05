@@ -15,10 +15,12 @@ public class PlayerController : MonoBehaviour
     private Animator playerAnimation;
     // other variables
     private Rigidbody playerRB;
-    private float jumpForce = 700;
+    private float jumpForce = 500;
     private float gravityModifier = 1.5f;
     private bool isOnGround = true;
+    public bool isInAir = false;
     public bool gameOver = false;
+    public int jumpCounter = 2;
 
     // Start is called before the first frame update
     void Start()
@@ -33,8 +35,9 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (transform.position.y > 0.25) isInAir = true;
         // jumping
-        if (Input.GetKeyDown(KeyCode.Space) && isOnGround && !gameOver)
+        if (Input.GetKeyDown(KeyCode.Space) && (isOnGround || (isInAir && jumpCounter == 1)) && !gameOver && jumpCounter > 0)
         {
             playerRB.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
             isOnGround = false;
@@ -44,6 +47,7 @@ public class PlayerController : MonoBehaviour
             dirtParticle.Stop();
             // audio
             playerAudioSource.PlayOneShot(jumpSound, 1.0f);
+            jumpCounter--;
         }
     }
     private void OnCollisionEnter(Collision collision)
@@ -51,7 +55,10 @@ public class PlayerController : MonoBehaviour
         if (collision.gameObject.CompareTag("Ground"))
         {
             isOnGround = true;
+            isInAir = false;
+            jumpCounter = 2;
             dirtParticle.Play();
+            playerAnimation.SetBool("Jump_b", false);
         }
         else if (collision.gameObject.CompareTag("Obstacle"))
         {
