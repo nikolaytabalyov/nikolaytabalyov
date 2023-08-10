@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class RotateCamera : MonoBehaviour
 {
-    public float rotationSpeed = 75;
+    private float rotationSpeed = 70;
     private float hInput;
     void Update()
     {
