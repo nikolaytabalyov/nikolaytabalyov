@@ -4,11 +4,15 @@ using UnityEngine;
 
 public class PlayerControllerX : MonoBehaviour
 {
+    private ParticleSystem _turboBoostParticle;
     private Rigidbody playerRb;
-    private float speed = 500;
+    private float normalSpeed = 500;
+    private float turboSpeed = 1000;
+    private float currentSpeed;
     private GameObject focalPoint;
 
     public bool hasPowerup;
+    private bool turboBoostActivated;
     public GameObject powerupIndicator;
     public int powerUpDuration = 5;
 
@@ -17,6 +21,9 @@ public class PlayerControllerX : MonoBehaviour
     
     void Start()
     {
+        currentSpeed = normalSpeed;
+        turboBoostActivated = false;
+        _turboBoostParticle = FindAnyObjectByType<ParticleSystem>();
         playerRb = GetComponent<Rigidbody>();
         focalPoint = GameObject.Find("Focal Point");
     }
@@ -25,7 +32,10 @@ public class PlayerControllerX : MonoBehaviour
     {
         // Add force to player in direction of the focal point (and camera)
         float verticalInput = Input.GetAxis("Vertical");
-        playerRb.AddForce(focalPoint.transform.forward * verticalInput * speed * Time.deltaTime); 
+        playerRb.AddForce(focalPoint.transform.forward * verticalInput * currentSpeed * Time.deltaTime); 
+
+        if(Input.GetKey(KeyCode.Space) && !turboBoostActivated)
+            StartCoroutine(ActivateTurboBoost());
 
         // Set powerup indicator position to beneath player
         powerupIndicator.transform.position = transform.position + new Vector3(0, -0.6f, 0);
@@ -40,6 +50,7 @@ public class PlayerControllerX : MonoBehaviour
             Destroy(other.gameObject);
             hasPowerup = true;
             powerupIndicator.SetActive(true);
+            StartCoroutine(PowerupCooldown());
         }
     }
 
@@ -57,7 +68,7 @@ public class PlayerControllerX : MonoBehaviour
         if (other.gameObject.CompareTag("Enemy"))
         {
             Rigidbody enemyRigidbody = other.gameObject.GetComponent<Rigidbody>();
-            Vector3 awayFromPlayer =  transform.position - other.gameObject.transform.position; 
+            Vector3 awayFromPlayer = other.gameObject.transform.position - transform.position; 
            
             if (hasPowerup) // if have powerup hit enemy with powerup force
             {
@@ -68,8 +79,16 @@ public class PlayerControllerX : MonoBehaviour
                 enemyRigidbody.AddForce(awayFromPlayer * normalStrength, ForceMode.Impulse);
             }
 
-
         }
+    }
+
+    IEnumerator ActivateTurboBoost(){
+        turboBoostActivated = true;
+        _turboBoostParticle.Play();
+        currentSpeed = turboSpeed;
+        yield return new WaitForSeconds(3);
+        currentSpeed = normalSpeed;
+        turboBoostActivated = false;
     }
 
 
