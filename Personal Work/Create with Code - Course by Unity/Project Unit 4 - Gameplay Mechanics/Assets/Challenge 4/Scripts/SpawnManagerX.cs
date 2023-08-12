@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class SpawnManagerX : MonoBehaviour
 {
-    private EnemyX enemyScriptInstance;
     public GameObject enemyPrefab;
     public GameObject powerupPrefab;
 
@@ -13,12 +12,16 @@ public class SpawnManagerX : MonoBehaviour
     private float spawnZMax = 25; // set max spawn Z
 
     public int enemyCount;
-    public int waveCount = 1;
+    private int waveCount = 1;
+    public int WaveCount { get {return waveCount;} set {} }
+    private float _currentEnemySpeed = 20.0f;
 
+    public float CurrentEnemySpeed { get {return _currentEnemySpeed;} set {}}
 
     public GameObject player; 
 
-    // Update is called once per frame
+    private void Start() {
+    }
     void Update()
     {
         enemyCount = GameObject.FindGameObjectsWithTag("Enemy").Length;
@@ -41,6 +44,7 @@ public class SpawnManagerX : MonoBehaviour
 
     void SpawnEnemyWave(int enemiesToSpawn)
     {
+        
         Vector3 powerupSpawnOffset = new Vector3(0, 0, -15); // make powerups spawn at player end
 
         // If no powerups remain, spawn a powerup
@@ -55,8 +59,8 @@ public class SpawnManagerX : MonoBehaviour
             Instantiate(enemyPrefab, GenerateSpawnPosition(), enemyPrefab.transform.rotation);
         }
 
+        _currentEnemySpeed += 5;
         waveCount++;
-        enemyScriptInstance.Speed = 500;
         ResetPlayerPosition(); // put player back at start
 
     }
