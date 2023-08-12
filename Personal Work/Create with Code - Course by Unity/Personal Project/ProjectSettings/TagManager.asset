@@ -8,6 +8,8 @@ TagManager:
   - Wall
   - Background
   - Ceiling
+  - GroundCheck
+  - Enemy
   layers:
   - Default
   - TransparentFX
