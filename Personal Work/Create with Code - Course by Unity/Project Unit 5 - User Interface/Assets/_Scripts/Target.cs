@@ -3,16 +3,26 @@ using UnityEngine;
 namespace NikolayTabalyov {
     public class Target : MonoBehaviour {
         
-        private Rigidbody targetRb;
+        [Header("Variables")]
         private float _xRange = 4;
         private float _minSpeed = 12;
         private float _maxSpeed = 16;
         private float _torqueRange = 10;
-        private float _ySpawnPosition = -6;
+        private float _ySpawnPosition = -2;
+        [Header("Components")]
+        private Rigidbody targetRb;
 
         private void Start() {
             targetRb = GetComponent<Rigidbody>();
             LaunchProp();
+        }
+
+        private void OnMouseDown() {
+            Destroy(gameObject);
+        }
+
+        private void OnTriggerEnter(Collider other) {
+            Destroy(gameObject);
         }
 
         private void LaunchProp() {
