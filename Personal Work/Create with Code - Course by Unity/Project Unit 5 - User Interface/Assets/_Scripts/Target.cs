@@ -9,8 +9,12 @@ namespace NikolayTabalyov {
         private float _maxSpeed = 16;
         private float _torqueRange = 10;
         private float _ySpawnPosition = -2;
+        [SerializeField] private int _pointValue; 
+
         [Header("Components")]
         private Rigidbody targetRb;
+        private GameManager _gameManager = GameManager.Instance;
+        [SerializeField] private ParticleSystem _explosionParticle;
 
         private void Start() {
             targetRb = GetComponent<Rigidbody>();
@@ -19,6 +23,8 @@ namespace NikolayTabalyov {
 
         private void OnMouseDown() {
             Destroy(gameObject);
+            Instantiate(_explosionParticle, transform.position, _explosionParticle.transform.rotation);
+            GameManager.Instance.UpdateScore(_pointValue);
         }
 
         private void OnTriggerEnter(Collider other) {
