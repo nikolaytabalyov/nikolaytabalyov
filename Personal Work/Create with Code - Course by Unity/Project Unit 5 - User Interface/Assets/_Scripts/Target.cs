@@ -29,6 +29,9 @@ namespace NikolayTabalyov {
 
         private void OnTriggerEnter(Collider other) {
             Destroy(gameObject);
+            if (!gameObject.CompareTag("Bad")) {
+                _gameManager.GameOver();
+            }
         }
 
         private void LaunchProp() {
