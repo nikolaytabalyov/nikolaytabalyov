@@ -1,0 +1,11 @@
+using UnityEngine;
+
+#ROOTNAMESPACEBEGIN#
+    public interface I#SCRIPTNAME# {
+        #NOTRIM#
+        #region Methods
+        #NOTRIM#
+        #endregion
+        #NOTRIM#
+    }
+#ROOTNAMESPACEEND#
