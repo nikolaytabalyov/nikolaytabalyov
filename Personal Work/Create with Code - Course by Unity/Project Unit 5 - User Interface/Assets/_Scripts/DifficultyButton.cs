@@ -23,7 +23,6 @@ namespace NikolayTabalyov {
 
         #region Other Methods
         private void SetDifficulty() {
-            Debug.Log(gameObject.name + " was clicked");
             _gameManager.StartGame(_difficulty);
         }
         #endregion

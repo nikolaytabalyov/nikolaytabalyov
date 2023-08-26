@@ -21,16 +21,17 @@ namespace NikolayTabalyov {
             LaunchProp();
         }
 
-        private void OnMouseDown() {
-            Destroy(gameObject);
-            Instantiate(_explosionParticle, transform.position, _explosionParticle.transform.rotation);
-            GameManager.Instance.UpdateScore(_pointValue);
-        }
-
         private void OnTriggerEnter(Collider other) {
-            Destroy(gameObject);
-            if (!gameObject.CompareTag("Bad")) {
-                _gameManager.GameOver();
+            if (other.CompareTag("Sensor")) {
+                Destroy(gameObject);
+                if (!gameObject.CompareTag("Bad")) {
+                    _gameManager.UpdateLives();
+                }
+            } else if (other.CompareTag("Trail") && _gameManager.GameState == GameManager.State.Running) {
+                Destroy(gameObject);
+                _gameManager.PlaySoundEffect(gameObject);
+                Instantiate(_explosionParticle, transform.position, _explosionParticle.transform.rotation);
+                _gameManager.UpdateScore(_pointValue);
             }
         }
 

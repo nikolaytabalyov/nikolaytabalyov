@@ -5,6 +5,9 @@ TagManager:
   serializedVersion: 2
   tags:
   - Bad
+  - Sensor
+  - Good
+  - Trail
   layers:
   - Default
   - TransparentFX
@@ -12,7 +15,7 @@ TagManager:
   - 
   - Water
   - UI
-  - 
+  - Trail
   - 
   - 
   - 
