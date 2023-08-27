@@ -42,24 +42,20 @@ public class PlayerOneControllerWASD : MonoBehaviour
             }
         }
     }
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
+   
 
     // Update is called once per frame
-    void Update()
-    {
+    private void Update() {
         //getting input
         input = Input.GetAxis("VerticalWASD");
         horizontal_input = Input.GetAxis("HorizontalWASD");
         cameraButton = Input.GetKeyDown(KeyCode.LeftShift);
-
+    }
+    private void FixedUpdate() {
         //camera switch 
         CameraSwitch(cameraButton);
         //moving
-        transform.Translate(UnityEngine.Vector3.forward * Time.deltaTime * speed * input);
-        transform.Rotate(UnityEngine.Vector3.up * Time.deltaTime * turnSpeed * horizontal_input);
+        transform.Translate(Vector3.forward * Time.deltaTime * speed * input);
+        transform.Rotate(Vector3.up * Time.deltaTime * turnSpeed * horizontal_input);
     }
 }

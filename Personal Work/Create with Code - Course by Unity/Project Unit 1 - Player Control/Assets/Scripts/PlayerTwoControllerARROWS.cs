@@ -22,7 +22,6 @@ public class PlayerTwoControllerARROWS : MonoBehaviour
     private float input, horizontal_input;
     private bool cameraButton;
 
-
     void CameraSwitch(bool cameraButton)
     {
         if (cameraButton == true)
@@ -42,24 +41,21 @@ public class PlayerTwoControllerARROWS : MonoBehaviour
             }
         }
     }
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
+    
 
     // Update is called once per frame
-    void Update()
-    {
-        //getting input
-        input = Input.GetAxis("VerticalArrows");
-        horizontal_input = Input.GetAxis("HorizontalArrows");
-        cameraButton = Input.GetKeyDown(KeyCode.RightShift);
+        void Update() {
+            //getting input
+            input = Input.GetAxis("VerticalArrows");
+            horizontal_input = Input.GetAxis("HorizontalArrows");
+            cameraButton = Input.GetKeyDown(KeyCode.RightShift);
+        }
 
-        //camera switch 
-        CameraSwitch(cameraButton);
-        //moving
-        transform.Translate(UnityEngine.Vector3.forward * Time.deltaTime * speed * input);
-        transform.Rotate(UnityEngine.Vector3.up * Time.deltaTime * turnSpeed * horizontal_input);
-    }
+        private void FixedUpdate() {
+            //camera switch 
+            CameraSwitch(cameraButton);
+            //moving
+            transform.Translate(Vector3.forward * Time.deltaTime * speed * input);
+            transform.Rotate(Vector3.up * Time.deltaTime * turnSpeed * horizontal_input);
+        }
 }
