@@ -4,21 +4,14 @@ namespace NikolayTabalyov
 {
     public class GameInputManager : MonoBehaviour {
 
-        public Vector2 GetInputVectorNormalized() {
-            Vector2 input = new Vector2(0, 0);    
+        private PlayerInputActions _playerInputActions;
 
-            if (Input.GetKey(KeyCode.W)) {
-                input.y = +1;
-            }
-            if (Input.GetKey(KeyCode.S)) {
-                input.y = -1;
-            }
-            if (Input.GetKey(KeyCode.A)) {
-                input.x = -1;
-            }
-            if (Input.GetKey(KeyCode.D)) {
-                input.x = +1;
-            }
+        private void Awake() {
+            _playerInputActions = new();
+            _playerInputActions.Enable();
+        }
+        public Vector2 GetInputVectorNormalized() {
+            Vector2 input = _playerInputActions.Player.Move.ReadValue<Vector2>(); 
             return input.normalized;
         }
     }
