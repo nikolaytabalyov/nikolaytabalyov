@@ -9,9 +9,12 @@ namespace NikolayTabalyov {
         [SerializeField] private float _speed = 5f;
         private float rotationSpeed = 10f;
         private bool _isWalking;
+        private Vector3 _lastInteractionDirection;
+
 
         [Header("Components")]
         [SerializeField] private GameInputManager _gameInputManager;
+        
 
         #region Unity Methods
         private void Update() {
@@ -19,6 +22,7 @@ namespace NikolayTabalyov {
                 HandlePlayerMovement();
                 RotatePlayer();
             }
+            HandleInteractions();
                 
         }
         #endregion
@@ -27,12 +31,15 @@ namespace NikolayTabalyov {
         
         private void HandlePlayerMovement() {
             float moveDistance = _speed * Time.deltaTime;
-            if (!DoCapsuleCast(GetDirection(), moveDistance)) {
+            Vector3 directionX = new Vector3(GetDirection().x, 0, 0).normalized;
+            Vector3 directionZ = new Vector3(0, 0, GetDirection().z).normalized;
+
+            if (!DoCapsuleCast(GetDirection(), moveDistance)) {    // If there is no collision, move the player
                 transform.position += GetDirection() * moveDistance;
-            } else if (!DoCapsuleCast(GetDirection('x'), moveDistance)) {
-                transform.position += GetDirection('x') * moveDistance;
-            } else if (!DoCapsuleCast(GetDirection('z'), moveDistance)) {
-                transform.position += GetDirection('z') * moveDistance;
+            } else if (!DoCapsuleCast(directionX, moveDistance)) { // If there is a collision, check if there is a collision on the X axis 
+                transform.position += directionX * moveDistance;
+            } else if (!DoCapsuleCast(directionZ, moveDistance)) { // If there is a collision, check if there is a collision on the Z axis
+                transform.position += directionZ * moveDistance;
             }
         }
         private void RotatePlayer() {
@@ -54,18 +61,22 @@ namespace NikolayTabalyov {
             Vector2 input = _gameInputManager.GetInputVectorNormalized();
             return new Vector3(input.x, 0, input.y);
         }
-        private Vector3 GetDirection(char axis) {
-            Vector2 input = _gameInputManager.GetInputVectorNormalized();
-            if (axis == 'x') {
-                return new Vector3(input.x, 0, 0).normalized;
-            } else if (axis == 'z') {
-                return new Vector3(0, 0, input.y).normalized;
-            } else {
-                return Vector3.zero;
-                    
-            }
-        }
         
+        
+        #endregion
+
+        #region Other Methods
+        private void HandleInteractions() {
+            Vector3 direction = GetDirection();
+            if (direction != Vector3.zero) {
+                _lastInteractionDirection = direction;
+            }
+            float maxInteractableDistance = 2f;
+            if (Physics.Raycast(transform.position, _lastInteractionDirection, out RaycastHit raycastHit, maxInteractableDistance)) {
+                Debug.Log(raycastHit.transform);
+            }
+
+        }
         #endregion
     }
 }
