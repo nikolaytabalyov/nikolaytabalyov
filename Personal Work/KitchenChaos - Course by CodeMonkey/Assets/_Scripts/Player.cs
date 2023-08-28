@@ -14,7 +14,8 @@ namespace NikolayTabalyov {
 
         [Header("Components")]
         [SerializeField] private GameInputManager _gameInputManager;
-        
+        [SerializeField] private LayerMask _countersLayerMask;
+
 
         #region Unity Methods
         private void Update() {
@@ -72,8 +73,10 @@ namespace NikolayTabalyov {
                 _lastInteractionDirection = direction;
             }
             float maxInteractableDistance = 2f;
-            if (Physics.Raycast(transform.position, _lastInteractionDirection, out RaycastHit raycastHit, maxInteractableDistance)) {
-                Debug.Log(raycastHit.transform);
+            if (Physics.Raycast(transform.position, _lastInteractionDirection, out RaycastHit raycastHit, maxInteractableDistance, _countersLayerMask)) {
+                if (raycastHit.collider.TryGetComponent(out ClearCounter clearCounter)) {
+                    clearCounter.Interact();
+                }
             }
 
         }
