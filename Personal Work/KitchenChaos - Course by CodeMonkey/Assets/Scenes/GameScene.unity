@@ -577,6 +577,12 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1625472221}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &565903936 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 332605013259567382, guid: eae5ee12d3417d144b7451c088acfd60,
+    type: 3}
+  m_PrefabInstance: {fileID: 733613425}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &733613425
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -585,6 +591,23 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1227596392485420370, guid: eae5ee12d3417d144b7451c088acfd60,
+        type: 3}
+      propertyPath: _tomatoPrefab
+      value: 
+      objectReference: {fileID: 3035714677478187609, guid: 437ab6c88924d414693f26862a3fa2c1,
+        type: 3}
+    - target: {fileID: 1227596392485420370, guid: eae5ee12d3417d144b7451c088acfd60,
+        type: 3}
+      propertyPath: _counterTopPoint
+      value: 
+      objectReference: {fileID: 565903936}
+    - target: {fileID: 1227596392485420370, guid: eae5ee12d3417d144b7451c088acfd60,
+        type: 3}
+      propertyPath: _kitchenObjectSO
+      value: 
+      objectReference: {fileID: 11400000, guid: baff65599266e3749b721e97e284f864,
+        type: 2}
     - target: {fileID: 3169218028679792416, guid: eae5ee12d3417d144b7451c088acfd60,
         type: 3}
       propertyPath: m_LocalPosition.x

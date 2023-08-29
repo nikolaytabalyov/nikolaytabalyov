@@ -69,6 +69,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9bd19449477bf8343b105c43aeea51ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _kitchenObjectSO: {fileID: 11400000, guid: a6affda2a8dc2574b9b6a1e25808b21b, type: 2}
+  _counterTopPoint: {fileID: 332605013259567382}
 --- !u!1 &7910708907449181169
 GameObject:
   m_ObjectHideFlags: 0
