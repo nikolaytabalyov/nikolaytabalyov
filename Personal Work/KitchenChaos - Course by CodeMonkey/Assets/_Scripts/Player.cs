@@ -3,7 +3,16 @@ using UnityEngine;
 
 namespace NikolayTabalyov {
     public class Player : MonoBehaviour {
-        
+
+        [field: Header("Events")]
+        public event EventHandler<OnSelectedCounterChangedEventArgs> OnSelectedCounterChanged;
+        public class OnSelectedCounterChangedEventArgs : EventArgs {
+            public ClearCounter selectedCounter;
+        }
+
+        [field: Header("Properties")]
+        public static Player Instance { get; private set;}
+
         [Header("Variables")]
         private float PLAYER_RADIUS = 0.7f;
         private float PLAYER_HEIGHT = 2f;
@@ -12,7 +21,6 @@ namespace NikolayTabalyov {
         private bool _isWalking;
         private Vector3 _lastInteractionDirection;
 
-
         [Header("Components")]
         [SerializeField] private GameInputManager _gameInputManager;
         [SerializeField] private LayerMask _countersLayerMask;
@@ -20,6 +28,18 @@ namespace NikolayTabalyov {
 
 
         #region Unity Methods
+        private void Awake() {
+            if (Instance != null) {
+                Destroy(gameObject);
+            } else {
+                Instance = this;
+            }
+        }
+
+        private void Start() {
+            _gameInputManager.OnInteract += GameInputManager_OnInteract; 
+        }
+        
         private void Update() {
             if (IsWalking()) {
                 HandlePlayerMovement();
@@ -29,9 +49,6 @@ namespace NikolayTabalyov {
                 
         }
 
-        private void Start() {
-            _gameInputManager.OnInteract += GameInputManager_OnInteract; 
-        }
 
         private void GameInputManager_OnInteract(object sender, EventArgs e) {
             if (_selectedCounter != null) {
@@ -87,14 +104,23 @@ namespace NikolayTabalyov {
             float maxInteractableDistance = 2f;
             if (Physics.Raycast(transform.position, _lastInteractionDirection, out RaycastHit raycastHit, maxInteractableDistance, _countersLayerMask)) {
                 if (raycastHit.collider.TryGetComponent(out ClearCounter clearCounter)) {
-                    _selectedCounter = clearCounter;
+                    SetSelectedCounter(clearCounter);
                 } else {
-                    _selectedCounter = null;
+                    SetSelectedCounter(null);
                 }
             } else {
-                _selectedCounter = null;
+                SetSelectedCounter(null);
             }
 
+            Debug.Log(_selectedCounter);
+        }
+
+        private void SetSelectedCounter(ClearCounter clearCounter) {
+            _selectedCounter = clearCounter;
+
+            OnSelectedCounterChanged?.Invoke(this, new OnSelectedCounterChangedEventArgs {
+                selectedCounter = _selectedCounter
+            });
         }
         #endregion
     }
