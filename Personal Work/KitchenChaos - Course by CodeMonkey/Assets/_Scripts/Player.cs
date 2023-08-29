@@ -105,14 +105,12 @@ namespace NikolayTabalyov {
             if (Physics.Raycast(transform.position, _lastInteractionDirection, out RaycastHit raycastHit, maxInteractableDistance, _countersLayerMask)) {
                 if (raycastHit.collider.TryGetComponent(out ClearCounter clearCounter)) {
                     SetSelectedCounter(clearCounter);
-                } else {
+                } else if (_selectedCounter != null) {
                     SetSelectedCounter(null);
                 }
-            } else {
+            } else if (_selectedCounter != null) {
                 SetSelectedCounter(null);
             }
-
-            Debug.Log(_selectedCounter);
         }
 
         private void SetSelectedCounter(ClearCounter clearCounter) {
