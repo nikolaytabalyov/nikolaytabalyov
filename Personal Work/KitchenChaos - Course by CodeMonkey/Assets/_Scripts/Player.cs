@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace NikolayTabalyov {
@@ -15,6 +16,7 @@ namespace NikolayTabalyov {
         [Header("Components")]
         [SerializeField] private GameInputManager _gameInputManager;
         [SerializeField] private LayerMask _countersLayerMask;
+        private ClearCounter _selectedCounter;
 
 
         #region Unity Methods
@@ -26,10 +28,20 @@ namespace NikolayTabalyov {
             HandleInteractions();
                 
         }
+
+        private void Start() {
+            _gameInputManager.OnInteract += GameInputManager_OnInteract; 
+        }
+
+        private void GameInputManager_OnInteract(object sender, EventArgs e) {
+            if (_selectedCounter != null) {
+                _selectedCounter.Interact();
+            }
+        }
         #endregion
 
         #region Movement Methods
-        
+
         private void HandlePlayerMovement() {
             float moveDistance = _speed * Time.deltaTime;
             Vector3 directionX = new Vector3(GetDirection().x, 0, 0).normalized;
@@ -75,8 +87,12 @@ namespace NikolayTabalyov {
             float maxInteractableDistance = 2f;
             if (Physics.Raycast(transform.position, _lastInteractionDirection, out RaycastHit raycastHit, maxInteractableDistance, _countersLayerMask)) {
                 if (raycastHit.collider.TryGetComponent(out ClearCounter clearCounter)) {
-                    clearCounter.Interact();
+                    _selectedCounter = clearCounter;
+                } else {
+                    _selectedCounter = null;
                 }
+            } else {
+                _selectedCounter = null;
             }
 
         }
