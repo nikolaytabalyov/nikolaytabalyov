@@ -25,7 +25,7 @@ namespace NikolayTabalyov
         #region Other Methods
         
         public override void Interact(Player player) {
-            if (!HasKitchenObject()) {
+            if (!player.HasKitchenObject()) { // if player is not holding anything
                 Transform kitchenObjectTransform = Instantiate(_kitchenObjectSO.prefab);
                 kitchenObjectTransform.GetComponent<KitchenObject>().SetNewKitchenObjectParent(player);
                 OnContainerCounterOpened?.Invoke(this, EventArgs.Empty);
