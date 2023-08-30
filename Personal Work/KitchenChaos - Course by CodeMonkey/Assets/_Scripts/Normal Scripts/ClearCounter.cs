@@ -1,41 +1,30 @@
 using UnityEngine;
 
-namespace NikolayTabalyov
-{
-    public class ClearCounter : MonoBehaviour {
+namespace NikolayTabalyov {
+    public class ClearCounter : MonoBehaviour, IKitchenObjectParent {
     
         [Header("Components")]
         [SerializeField] private KitchenObjectSO _kitchenObjectSO;
         [SerializeField] private Transform _counterTopPoint;
-        [SerializeField] private ClearCounter _secondClearCounter;
         private KitchenObject _kitchenObject;
 
-        [Header("Variables")]
-        [SerializeField] private bool _testing;
+        //[Header("Variables")]
 
         #region Unity Methods
-        private void Update() {
-            if (_testing && Input.GetKeyDown(KeyCode.Space)) {
-                if (_kitchenObject is not null) {
-                    _kitchenObject.SetNewClearCounter(_secondClearCounter);
-                }
-            }
-        }
+       
         #endregion
 
         #region Other Methods
-        public void Interact() {
+        public void Interact(Player player) {
             if (_kitchenObject is null) {
                 Transform kitchenObjectTransform = Instantiate(_kitchenObjectSO.prefab, _counterTopPoint);
-                kitchenObjectTransform.GetComponent<KitchenObject>().SetNewClearCounter(this);
+                kitchenObjectTransform.GetComponent<KitchenObject>().SetNewKitchenObjectParent(this);
             } else {
-                Debug.Log(_kitchenObject.GetClearCounter());
+                _kitchenObject.SetNewKitchenObjectParent(player);
             }
         }
 
-        public Transform GetNewCounterTopPoint() {
-            return _counterTopPoint;
-        }
+        public Transform GetNewKitchenObjectParentPoint() => _counterTopPoint;
         public void SetKitchenObject(KitchenObject kitchenObject) => _kitchenObject = kitchenObject;
         public KitchenObject GetKitchenObject() => _kitchenObject;
         public void ClearKitchenObject() => _kitchenObject = null;

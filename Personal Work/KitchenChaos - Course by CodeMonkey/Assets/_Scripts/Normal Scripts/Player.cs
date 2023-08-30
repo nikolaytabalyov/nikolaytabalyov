@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 
 namespace NikolayTabalyov {
-    public class Player : MonoBehaviour {
+    public class Player : MonoBehaviour, IKitchenObjectParent {
 
         [field: Header("Events")]
         public event EventHandler<OnSelectedCounterChangedEventArgs> OnSelectedCounterChanged;
@@ -24,7 +24,9 @@ namespace NikolayTabalyov {
         [Header("Components")]
         [SerializeField] private GameInputManager _gameInputManager;
         [SerializeField] private LayerMask _countersLayerMask;
+        [SerializeField] private Transform _playerObjectHoldPoint;
         private ClearCounter _selectedCounter;
+        private KitchenObject _kitchenObject;
 
 
         #region Unity Methods
@@ -52,7 +54,7 @@ namespace NikolayTabalyov {
 
         private void GameInputManager_OnInteract(object sender, EventArgs e) {
             if (_selectedCounter != null) {
-                _selectedCounter.Interact();
+                _selectedCounter.Interact(this);
             }
         }
         #endregion
@@ -121,5 +123,11 @@ namespace NikolayTabalyov {
             });
         }
         #endregion
+
+        public Transform GetNewKitchenObjectParentPoint() => _playerObjectHoldPoint;
+        public void SetKitchenObject(KitchenObject kitchenObject) => _kitchenObject = kitchenObject;
+        public KitchenObject GetKitchenObject() => _kitchenObject;
+        public void ClearKitchenObject() => _kitchenObject = null;
+        public bool HasKitchenObject() => _kitchenObject is not null;
     }
 }
