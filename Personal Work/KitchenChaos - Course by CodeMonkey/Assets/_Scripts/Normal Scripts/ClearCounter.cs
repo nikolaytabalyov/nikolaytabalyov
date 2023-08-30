@@ -3,8 +3,7 @@ using UnityEngine;
 namespace NikolayTabalyov {
     public class ClearCounter : BaseCounter {
     
-        [Header("Components")]
-        [SerializeField] private KitchenObjectSO _kitchenObjectSO;
+        //[Header("Components")]
 
         //[Header("Variables")]
 
