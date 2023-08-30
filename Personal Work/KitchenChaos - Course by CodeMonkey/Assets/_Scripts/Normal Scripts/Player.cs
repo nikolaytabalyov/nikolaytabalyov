@@ -7,7 +7,7 @@ namespace NikolayTabalyov {
         [field: Header("Events")]
         public event EventHandler<OnSelectedCounterChangedEventArgs> OnSelectedCounterChanged;
         public class OnSelectedCounterChangedEventArgs : EventArgs {
-            public ClearCounter selectedCounter;
+            public BaseCounter selectedCounter;
         }
 
         [field: Header("Properties")]
@@ -25,7 +25,7 @@ namespace NikolayTabalyov {
         [SerializeField] private GameInputManager _gameInputManager;
         [SerializeField] private LayerMask _countersLayerMask;
         [SerializeField] private Transform _playerObjectHoldPoint;
-        private ClearCounter _selectedCounter;
+        private BaseCounter _selectedCounter;
         private KitchenObject _kitchenObject;
 
 
@@ -105,8 +105,8 @@ namespace NikolayTabalyov {
             }
             float maxInteractableDistance = 2f;
             if (Physics.Raycast(transform.position, _lastInteractionDirection, out RaycastHit raycastHit, maxInteractableDistance, _countersLayerMask)) {
-                if (raycastHit.collider.TryGetComponent(out ClearCounter clearCounter)) {
-                    SetSelectedCounter(clearCounter);
+                if (raycastHit.collider.TryGetComponent(out BaseCounter baseCounter)) {
+                    SetSelectedCounter(baseCounter);
                 } else if (_selectedCounter != null) {
                     SetSelectedCounter(null);
                 }
@@ -115,8 +115,8 @@ namespace NikolayTabalyov {
             }
         }
 
-        private void SetSelectedCounter(ClearCounter clearCounter) {
-            _selectedCounter = clearCounter;
+        private void SetSelectedCounter(BaseCounter baseCounter) {
+            _selectedCounter = baseCounter;
 
             OnSelectedCounterChanged?.Invoke(this, new OnSelectedCounterChangedEventArgs {
                 selectedCounter = _selectedCounter

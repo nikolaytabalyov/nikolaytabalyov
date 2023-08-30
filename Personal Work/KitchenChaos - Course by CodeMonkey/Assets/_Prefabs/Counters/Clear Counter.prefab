@@ -162,6 +162,21 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5632921575328785035, guid: 0004cb1e11ad014419b943c7da960724,
+        type: 3}
+      propertyPath: _baseCounter
+      value: 
+      objectReference: {fileID: 7462862168754037237}
+    - target: {fileID: 5632921575328785035, guid: 0004cb1e11ad014419b943c7da960724,
+        type: 3}
+      propertyPath: _selectedCounterVisuals.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5632921575328785035, guid: 0004cb1e11ad014419b943c7da960724,
+        type: 3}
+      propertyPath: _selectedCounterVisuals.Array.data[0]
+      value: 
+      objectReference: {fileID: 5006444397935437706}
     - target: {fileID: 8489276541531669327, guid: 0004cb1e11ad014419b943c7da960724,
         type: 3}
       propertyPath: m_IsActive
@@ -170,11 +185,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 4589716710238282922, guid: 0004cb1e11ad014419b943c7da960724,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 9122506116339189326}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0004cb1e11ad014419b943c7da960724, type: 3}
 --- !u!4 &1082127975577518190 stripped
 Transform:
@@ -182,26 +193,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 3509868365879633093}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1082127975577518191 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4589716710238282922, guid: 0004cb1e11ad014419b943c7da960724,
-    type: 3}
-  m_PrefabInstance: {fileID: 3509868365879633093}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &9122506116339189326
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1082127975577518191}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 11646c62e11b42f489dbf0586e9862c3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _selectedCounterVisual: {fileID: 5006444397935437706}
-  _clearCounter: {fileID: 7462862168754037237}
 --- !u!1 &5006444397935437706 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8489276541531669327, guid: 0004cb1e11ad014419b943c7da960724,
@@ -234,7 +225,7 @@ PrefabInstance:
     - target: {fileID: 7980046887491053577, guid: 47a38e6b06a7a4946ab15b79641ff6f1,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 3.09
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7980046887491053577, guid: 47a38e6b06a7a4946ab15b79641ff6f1,
         type: 3}
