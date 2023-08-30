@@ -29,8 +29,7 @@ namespace NikolayTabalyov {
         public override void InteractAlternate(Player player) {
             if (HasKitchenObject()) {
                 GetKitchenObject().DestroySelf();
-                Transform kitchenObjectTransform = Instantiate(_cutKitchenObjectSO.prefab);
-                kitchenObjectTransform.GetComponent<KitchenObject>().SetNewKitchenObjectParent(this);
+                KitchenObject.SpawnKitchenObject(_cutKitchenObjectSO, this);
             }
         }
         #endregion
