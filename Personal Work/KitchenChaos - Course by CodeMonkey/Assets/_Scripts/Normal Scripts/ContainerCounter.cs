@@ -1,8 +1,11 @@
+using System;
 using UnityEngine;
 
 namespace NikolayTabalyov
 {
     public class ContainerCounter : BaseCounter {
+
+        public event EventHandler OnContainerCounterOpened;
     
         #region Variables
         //[Header("Variables")]
@@ -16,13 +19,16 @@ namespace NikolayTabalyov
         #region Unity Methods
     
         #endregion
-    
+        private void Awake() {
+            
+        }
         #region Other Methods
         
         public override void Interact(Player player) {
             if (!HasKitchenObject()) {
                 Transform kitchenObjectTransform = Instantiate(_kitchenObjectSO.prefab);
                 kitchenObjectTransform.GetComponent<KitchenObject>().SetNewKitchenObjectParent(player);
+                OnContainerCounterOpened?.Invoke(this, EventArgs.Empty);
             }
         }
         #endregion
