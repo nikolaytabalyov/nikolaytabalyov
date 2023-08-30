@@ -18,6 +18,10 @@ namespace NikolayTabalyov
         public virtual void Interact(Player player) {
             Debug.LogError("Interacting with base counter");
         }
+        
+        public virtual void InteractAlternate(Player player) {
+            Debug.LogError("Interacting with base counter");
+        }
 
         public Transform GetNewKitchenObjectParentPoint() => _counterTopPoint;
         public void SetKitchenObject(KitchenObject kitchenObject) => _kitchenObject = kitchenObject;

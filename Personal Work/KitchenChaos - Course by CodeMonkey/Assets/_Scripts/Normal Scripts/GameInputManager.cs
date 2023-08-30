@@ -7,12 +7,18 @@ namespace NikolayTabalyov
     public class GameInputManager : MonoBehaviour {
 
         public event EventHandler OnInteract;
+        public event EventHandler OnInteractAlternate;
         private PlayerInputActions _playerInputActions;
 
         private void Awake() {
             _playerInputActions = new();
             _playerInputActions.Enable();
             _playerInputActions.Player.Interact.performed += InteractPerformed;
+            _playerInputActions.Player.InteractAlternate.performed += InteractAlternatePerformed;
+        }
+
+        private void InteractAlternatePerformed(InputAction.CallbackContext context) {
+            OnInteractAlternate?.Invoke(this, EventArgs.Empty);
         }
 
         private void InteractPerformed(InputAction.CallbackContext context) {

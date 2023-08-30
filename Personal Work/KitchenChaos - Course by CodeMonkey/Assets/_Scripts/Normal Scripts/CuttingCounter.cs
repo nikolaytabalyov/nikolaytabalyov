@@ -8,7 +8,8 @@ namespace NikolayTabalyov {
         #endregion
     
         #region Components
-        //[Header("Components")]
+        [Header("Components")]
+        [SerializeField] private KitchenObjectSO _cutKitchenObjectSO;
         #endregion
     
         #region Unity Methods
@@ -22,6 +23,14 @@ namespace NikolayTabalyov {
                     player.GetKitchenObject().SetNewKitchenObjectParent(this);
             } else if (!player.HasKitchenObject()){ // if counter is not empty and player is not holding anything
                 GetKitchenObject().SetNewKitchenObjectParent(player);
+            }
+        }
+
+        public override void InteractAlternate(Player player) {
+            if (HasKitchenObject()) {
+                GetKitchenObject().DestroySelf();
+                Transform kitchenObjectTransform = Instantiate(_cutKitchenObjectSO.prefab);
+                kitchenObjectTransform.GetComponent<KitchenObject>().SetNewKitchenObjectParent(this);
             }
         }
         #endregion

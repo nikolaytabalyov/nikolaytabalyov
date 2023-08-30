@@ -1151,6 +1151,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: Cutting Counter
       objectReference: {fileID: 0}
+    - target: {fileID: 5010193695038080774, guid: cadd9950f94b17b49a074a6413221c22,
+        type: 3}
+      propertyPath: _cutKitchenObjectSO
+      value: 
+      objectReference: {fileID: 11400000, guid: 49de14f204bcc9147b9067d15fa179c5,
+        type: 2}
     - target: {fileID: 6560610762364420940, guid: cadd9950f94b17b49a074a6413221c22,
         type: 3}
       propertyPath: m_LocalPosition.x

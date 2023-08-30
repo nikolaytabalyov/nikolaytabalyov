@@ -40,8 +40,10 @@ namespace NikolayTabalyov {
 
         private void Start() {
             _gameInputManager.OnInteract += GameInputManager_OnInteract; 
+            _gameInputManager.OnInteractAlternate += GameInputManager_OnInteractAlternate;
         }
-        
+
+
         private void Update() {
             if (IsWalking()) {
                 HandlePlayerMovement();
@@ -50,8 +52,14 @@ namespace NikolayTabalyov {
             HandleInteractions();
                 
         }
-
-
+        #endregion
+        
+        #region Event Methods
+        private void GameInputManager_OnInteractAlternate(object sender, EventArgs e){
+            if (_selectedCounter != null) {
+                _selectedCounter.InteractAlternate(this);
+            }
+        }
         private void GameInputManager_OnInteract(object sender, EventArgs e) {
             if (_selectedCounter != null) {
                 _selectedCounter.Interact(this);

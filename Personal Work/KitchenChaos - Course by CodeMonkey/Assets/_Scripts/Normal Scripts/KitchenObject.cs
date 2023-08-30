@@ -27,5 +27,10 @@ namespace NikolayTabalyov
         public IKitchenObjectParent GetKitchenObjectParent() {
             return _kitchenObjectParent;
         }
+
+        public void DestroySelf() {
+            _kitchenObjectParent.ClearKitchenObject();
+            Destroy(gameObject);
+        }
     }
 }
