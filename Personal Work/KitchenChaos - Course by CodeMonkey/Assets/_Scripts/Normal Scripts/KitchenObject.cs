@@ -6,7 +6,7 @@ namespace NikolayTabalyov
         
         [SerializeField] private KitchenObjectSO _kitchenObjectSO;
         private IKitchenObjectParent _kitchenObjectParent;
-        public KitchenObjectSO GetKitchenObjectSOName => _kitchenObjectSO;
+        public KitchenObjectSO GetKitchenObjectSO => _kitchenObjectSO;
 
 
         public void SetNewKitchenObjectParent(IKitchenObjectParent kitchenObjectParent) {
@@ -37,7 +37,7 @@ namespace NikolayTabalyov
             Transform kitchenObjectTransform = Instantiate(kitchenObjectSO.prefab);
             KitchenObject kitchenObject = kitchenObjectTransform.GetComponent<KitchenObject>();
             kitchenObject.SetNewKitchenObjectParent(kitchenObjectParent);
-            
+
             return kitchenObject;
         }
     }
