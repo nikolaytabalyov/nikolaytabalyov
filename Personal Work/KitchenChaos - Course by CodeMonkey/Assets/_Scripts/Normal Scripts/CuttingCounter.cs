@@ -6,12 +6,13 @@ namespace NikolayTabalyov {
     public class CuttingCounter : BaseCounter {
     
         #region Variables
-        //[Header("Variables")]
+        [Header("Variables")]
+        private int _cuttingDuration;
         #endregion
     
         #region Components
         [Header("Components")]
-        [SerializeField] private CuttingRecipeSO[] _cuttingRecipeSOArray;
+        [SerializeField] private List<CuttingRecipeSO> _cuttingRecipeSOArray;
         #endregion
     
         #region Unity Methods
@@ -30,28 +31,27 @@ namespace NikolayTabalyov {
 
         public override void InteractAlternate(Player player) {
             if (HasKitchenObject() && HasCuttingRecipe(GetKitchenObject().GetKitchenObjectSO)) {
-                KitchenObjectSO kitchenObjectSO = GetKitchenObject().GetKitchenObjectSO;
-                GetKitchenObject().DestroySelf();
-                KitchenObject.SpawnKitchenObject(GetOutputFromInput(kitchenObjectSO), this);
+                _cuttingDuration++;
+
+                if (_cuttingDuration >= GetCuttingRecipeSOFromInput(GetKitchenObject().GetKitchenObjectSO).cuttingDurationMax) {
+                    KitchenObjectSO kitchenObjectSO = GetKitchenObject().GetKitchenObjectSO;
+                    GetKitchenObject().DestroySelf();
+                    KitchenObject.SpawnKitchenObject(GetOutputFromInput(kitchenObjectSO), this);
+                    _cuttingDuration = 0;
+                }
             }
         }
 
-        private bool HasCuttingRecipe(KitchenObjectSO input) {
-            foreach (CuttingRecipeSO cuttingRecipeSO in _cuttingRecipeSOArray) {
-                if (cuttingRecipeSO.input == input) {
-                    return true;
-                }
-            }
-            return false;
-        }
+        private bool HasCuttingRecipe(KitchenObjectSO inputKitchenObjectSO) {
+            return _cuttingRecipeSOArray.Find(cuttingRecipeSO => cuttingRecipeSO.input == inputKitchenObjectSO) is not null;  
+        }   // returns true if there is a cutting recipe for the input
 
-        private KitchenObjectSO GetOutputFromInput(KitchenObjectSO input) {
-            foreach (CuttingRecipeSO cuttingRecipeSO in _cuttingRecipeSOArray) {
-                if (cuttingRecipeSO.input == input) {
-                    return cuttingRecipeSO.output;
-                }
-            }
-            return null;
+        private KitchenObjectSO GetOutputFromInput(KitchenObjectSO inputKitchenObjectSO) {
+            return _cuttingRecipeSOArray.Find(cuttingRecipeSO => cuttingRecipeSO.input == inputKitchenObjectSO).output;  
+        }   
+
+        private CuttingRecipeSO GetCuttingRecipeSOFromInput(KitchenObjectSO inputKitchenObjectSO) {
+            return _cuttingRecipeSOArray.Find(cuttingRecipeSO => cuttingRecipeSO.input == inputKitchenObjectSO);  
         }
         #endregion
     }

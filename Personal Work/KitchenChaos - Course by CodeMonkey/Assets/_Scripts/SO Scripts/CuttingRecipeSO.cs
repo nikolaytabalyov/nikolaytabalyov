@@ -8,6 +8,7 @@ namespace NikolayTabalyov
         #region Variables
         public KitchenObjectSO input;
         public KitchenObjectSO output;
+		public int cuttingDurationMax;
 		#endregion
         
 		#region Methods
