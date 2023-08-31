@@ -5,7 +5,11 @@ using UnityEngine;
 namespace NikolayTabalyov
 {
     public class StoveCounter : BaseCounter {
-    
+        
+        public event EventHandler<OnStateChangedEventArgs> OnStateChanged;
+        public class OnStateChangedEventArgs : EventArgs {
+            public State state;
+        }
         public enum State {
             Empty, 
             Frying,
@@ -46,6 +50,10 @@ namespace NikolayTabalyov
                             _currentState = State.Fried;
                             _burningTimer = 0f;
                             _burningRecipeSO = GetBurningRecipeSOFromInput(_fryingRecipeSO.output);
+
+                            OnStateChanged?.Invoke(this, new OnStateChangedEventArgs {
+                                state = _currentState
+                            });
                         }
                         break;
                     case State.Fried:
@@ -54,10 +62,13 @@ namespace NikolayTabalyov
                             GetKitchenObject().DestroySelf();
                             KitchenObject.SpawnKitchenObject(_burningRecipeSO.output, this);
                             _currentState = State.Burned;
+
+                            OnStateChanged?.Invoke(this, new OnStateChangedEventArgs {
+                                state = _currentState
+                            });
                         }
                         break;
                     case State.Burned:
-                        Debug.Log("Burned");
                         break;
                 }
             }
@@ -74,12 +85,18 @@ namespace NikolayTabalyov
 
                     _fryingTimer = 0f;
                     _currentState = State.Frying;
-                    
+                    OnStateChanged?.Invoke(this, new OnStateChangedEventArgs {
+                        state = _currentState
+                    });
+
                     _fryingRecipeSO = GetFryingRecipeSOFromInput(GetKitchenObject().GetKitchenObjectSO);
                 }
             } else if (!player.HasKitchenObject()){ // if counter is not empty and player is not holding anything
                 GetKitchenObject().SetNewKitchenObjectParent(player);
                 _currentState = State.Empty;
+                OnStateChanged?.Invoke(this, new OnStateChangedEventArgs {
+                    state = _currentState
+                });
             }
         }
 
