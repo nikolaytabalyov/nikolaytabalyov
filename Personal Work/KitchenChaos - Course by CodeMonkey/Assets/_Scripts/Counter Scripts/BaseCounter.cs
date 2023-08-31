@@ -20,7 +20,7 @@ namespace NikolayTabalyov
         }
         
         public virtual void InteractAlternate(Player player) {
-            Debug.LogError("Interacting with base counter");
+            //Debug.LogError("Interacting with base counter"); commented out because stove doesn't have an alternate interaction
         }
 
         public Transform GetNewKitchenObjectParentPoint() => _counterTopPoint;
