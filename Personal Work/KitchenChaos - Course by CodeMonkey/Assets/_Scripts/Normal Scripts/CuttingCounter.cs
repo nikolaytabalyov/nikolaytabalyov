@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -5,6 +6,14 @@ using UnityEngine;
 namespace NikolayTabalyov {
     public class CuttingCounter : BaseCounter {
     
+        public event EventHandler<OnCuttingProgressChangedEventArgs> OnCuttingProgressChanged;
+        public class OnCuttingProgressChangedEventArgs : EventArgs {
+            public float cuttingProgressNormalized;
+        }
+
+        public event EventHandler OnCut;
+
+
         #region Variables
         [Header("Variables")]
         private int _cuttingDuration;
@@ -22,8 +31,15 @@ namespace NikolayTabalyov {
         #region Other Methods
         public override void Interact(Player player) {
             if (!HasKitchenObject()) { // if counter is empty
-                if (player.HasKitchenObject() && HasCuttingRecipe(player.GetKitchenObject().GetKitchenObjectSO)) // if player is holding something and it can be cut
+                if (player.HasKitchenObject() && HasCuttingRecipe(player.GetKitchenObject().GetKitchenObjectSO)) { // if player is holding something and it can be cut
                     player.GetKitchenObject().SetNewKitchenObjectParent(this);
+                    _cuttingDuration = 0;
+
+                    int maxCuttingDuration = GetCuttingRecipeSOFromInput(GetKitchenObject().GetKitchenObjectSO).cuttingDurationMax;
+                    OnCuttingProgressChanged?.Invoke(this, new OnCuttingProgressChangedEventArgs {
+                        cuttingProgressNormalized = (float)_cuttingDuration / maxCuttingDuration
+                    });
+                }
             } else if (!player.HasKitchenObject()){ // if counter is not empty and player is not holding anything
                 GetKitchenObject().SetNewKitchenObjectParent(player);
             }
@@ -32,12 +48,17 @@ namespace NikolayTabalyov {
         public override void InteractAlternate(Player player) {
             if (HasKitchenObject() && HasCuttingRecipe(GetKitchenObject().GetKitchenObjectSO)) {
                 _cuttingDuration++;
+                OnCut?.Invoke(this, EventArgs.Empty);
+                
+                int maxCuttingDuration = GetCuttingRecipeSOFromInput(GetKitchenObject().GetKitchenObjectSO).cuttingDurationMax;
+                OnCuttingProgressChanged?.Invoke(this, new OnCuttingProgressChangedEventArgs {
+                    cuttingProgressNormalized = (float)_cuttingDuration / maxCuttingDuration
+                });
 
                 if (_cuttingDuration >= GetCuttingRecipeSOFromInput(GetKitchenObject().GetKitchenObjectSO).cuttingDurationMax) {
                     KitchenObjectSO kitchenObjectSO = GetKitchenObject().GetKitchenObjectSO;
                     GetKitchenObject().DestroySelf();
                     KitchenObject.SpawnKitchenObject(GetOutputFromInput(kitchenObjectSO), this);
-                    _cuttingDuration = 0;
                 }
             }
         }
