@@ -79,6 +79,7 @@ namespace NikolayTabalyov
                 }
             } else if (!player.HasKitchenObject()){ // if counter is not empty and player is not holding anything
                 GetKitchenObject().SetNewKitchenObjectParent(player);
+                _currentState = State.Empty;
             }
         }
 
