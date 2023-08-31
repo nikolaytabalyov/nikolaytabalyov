@@ -4,8 +4,9 @@ using UnityEngine;
 
 namespace NikolayTabalyov
 {
-    public class StoveCounter : BaseCounter {
+    public class StoveCounter : BaseCounter, IHasProgress {
         
+        public event EventHandler<IHasProgress.OnProgressChangedEventArgs> OnProgressChanged;
         public event EventHandler<OnStateChangedEventArgs> OnStateChanged;
         public class OnStateChangedEventArgs : EventArgs {
             public State state;
@@ -22,14 +23,14 @@ namespace NikolayTabalyov
         private State _currentState;
         [SerializeField] private List<FryingRecipeSO> _fryingRecipeSOList;
         [SerializeField] private List<BurningRecipeSO> _burningRecipeSOList;
-        private FryingRecipeSO _fryingRecipeSO;
-        private BurningRecipeSO _burningRecipeSO;
         private float _fryingTimer;
         private float _burningTimer;
         #endregion
     
         #region Components
-        //[Header("Components")]
+        [Header("Components")]
+        private FryingRecipeSO _fryingRecipeSO;
+        private BurningRecipeSO _burningRecipeSO;
         #endregion
     
         #region Unity Methods
@@ -44,20 +45,34 @@ namespace NikolayTabalyov
                         break;
                     case State.Frying:
                         _fryingTimer += Time.deltaTime;
+
+                        OnProgressChanged?.Invoke(this, new IHasProgress.OnProgressChangedEventArgs {
+                            progressNormalized = _fryingTimer / _fryingRecipeSO.fryingDurationMax
+                        });
                         if (_fryingTimer >= _fryingRecipeSO.fryingDurationMax) {
                             GetKitchenObject().DestroySelf();
                             KitchenObject.SpawnKitchenObject(_fryingRecipeSO.output, this);
                             _currentState = State.Fried;
                             _burningTimer = 0f;
+
+                            OnProgressChanged?.Invoke(this, new IHasProgress.OnProgressChangedEventArgs {
+                                progressNormalized = _fryingTimer / _fryingRecipeSO.fryingDurationMax
+                            });
+
                             _burningRecipeSO = GetBurningRecipeSOFromInput(_fryingRecipeSO.output);
 
                             OnStateChanged?.Invoke(this, new OnStateChangedEventArgs {
                                 state = _currentState
                             });
+
                         }
                         break;
                     case State.Fried:
                         _burningTimer += Time.deltaTime;
+
+                        OnProgressChanged?.Invoke(this, new IHasProgress.OnProgressChangedEventArgs {
+                            progressNormalized = _burningTimer / _burningRecipeSO.burningDurationMax
+                        });
                         if (_burningTimer >= _burningRecipeSO.burningDurationMax) {
                             GetKitchenObject().DestroySelf();
                             KitchenObject.SpawnKitchenObject(_burningRecipeSO.output, this);
@@ -65,6 +80,10 @@ namespace NikolayTabalyov
 
                             OnStateChanged?.Invoke(this, new OnStateChangedEventArgs {
                                 state = _currentState
+                            });
+
+                            OnProgressChanged?.Invoke(this, new IHasProgress.OnProgressChangedEventArgs {
+                                progressNormalized = 0f
                             });
                         }
                         break;

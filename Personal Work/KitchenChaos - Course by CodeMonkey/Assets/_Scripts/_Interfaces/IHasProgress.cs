@@ -5,9 +5,9 @@ namespace NikolayTabalyov
 {
     public interface IHasProgress {
         
-        public event EventHandler<OnCuttingProgressChangedEventArgs> OnCuttingProgressChanged;
-        public class OnCuttingProgressChangedEventArgs : EventArgs {
-            public float cuttingProgressNormalized;
+        public event EventHandler<OnProgressChangedEventArgs> OnProgressChanged;
+        public class OnProgressChangedEventArgs : EventArgs {
+            public float progressNormalized;
         }
         #region Methods
         

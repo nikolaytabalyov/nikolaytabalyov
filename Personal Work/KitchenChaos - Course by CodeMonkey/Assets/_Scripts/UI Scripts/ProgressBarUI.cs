@@ -26,14 +26,14 @@ namespace NikolayTabalyov
             _hasProgress = _hasProgressGameObject.GetComponent<IHasProgress>(); 
             if (_hasProgress is null) 
                 Debug.LogError("No IHasProgress component found on " + _hasProgressGameObject);
-                
-            _hasProgress.OnCuttingProgressChanged += IHasProgress_OnCuttingProgressChanged;
+
+            _hasProgress.OnProgressChanged += IHasProgress_OnCuttingProgressChanged;
             _progressBarImage.fillAmount = _emptyProgressAmount;
             Hide(); 
         }
 
-        private void IHasProgress_OnCuttingProgressChanged(object sender, IHasProgress.OnCuttingProgressChangedEventArgs e) {
-            _progressBarImage.fillAmount = e.cuttingProgressNormalized; 
+        private void IHasProgress_OnCuttingProgressChanged(object sender, IHasProgress.OnProgressChangedEventArgs e) {
+            _progressBarImage.fillAmount = e.progressNormalized; 
 
             if (_progressBarImage.fillAmount == _filledProgressAmount || _progressBarImage.fillAmount == _emptyProgressAmount) {
                 Hide();

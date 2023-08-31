@@ -6,7 +6,7 @@ using UnityEngine;
 namespace NikolayTabalyov {
     public class CuttingCounter : BaseCounter, IHasProgress {
     
-        public event EventHandler<IHasProgress.OnCuttingProgressChangedEventArgs> OnCuttingProgressChanged;
+        public event EventHandler<IHasProgress.OnProgressChangedEventArgs> OnProgressChanged;
 
         public event EventHandler OnCut;
 
@@ -33,8 +33,8 @@ namespace NikolayTabalyov {
                     _cuttingDuration = 0;
 
                     int maxCuttingDuration = GetCuttingRecipeSOFromInput(GetKitchenObject().GetKitchenObjectSO).cuttingDurationMax;
-                    OnCuttingProgressChanged?.Invoke(this, new IHasProgress.OnCuttingProgressChangedEventArgs {
-                        cuttingProgressNormalized = (float)_cuttingDuration / maxCuttingDuration
+                    OnProgressChanged?.Invoke(this, new IHasProgress.OnProgressChangedEventArgs {
+                        progressNormalized = (float)_cuttingDuration / maxCuttingDuration
                     });
                 }
             } else if (!player.HasKitchenObject()){ // if counter is not empty and player is not holding anything
@@ -48,8 +48,8 @@ namespace NikolayTabalyov {
                 OnCut?.Invoke(this, EventArgs.Empty);
                 
                 int maxCuttingDuration = GetCuttingRecipeSOFromInput(GetKitchenObject().GetKitchenObjectSO).cuttingDurationMax;
-                OnCuttingProgressChanged?.Invoke(this, new IHasProgress.OnCuttingProgressChangedEventArgs {
-                    cuttingProgressNormalized = (float)_cuttingDuration / maxCuttingDuration
+                OnProgressChanged?.Invoke(this, new IHasProgress.OnProgressChangedEventArgs {
+                    progressNormalized = (float)_cuttingDuration / maxCuttingDuration
                 });
 
                 if (_cuttingDuration >= GetCuttingRecipeSOFromInput(GetKitchenObject().GetKitchenObjectSO).cuttingDurationMax) {
