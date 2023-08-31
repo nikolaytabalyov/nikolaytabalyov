@@ -27,21 +27,30 @@ namespace NikolayTabalyov {
     
         #region Other Methods
         public override void Interact(Player player) {
-            if (!HasKitchenObject()) { // if counter is empty
-                if (player.HasKitchenObject() && HasCuttingRecipe(player.GetKitchenObject().GetKitchenObjectSO)) { // if player is holding something and it can be cut
-                    player.GetKitchenObject().SetNewKitchenObjectParent(this);
-                    _cuttingDuration = 0;
+            switch (HasKitchenObject()) {
+                case false: // if counter is empty
+                    if (player.HasKitchenObject() && HasCuttingRecipe(player.GetKitchenObject().GetKitchenObjectSO)) { // if player is holding something and it can be cut
+                        player.GetKitchenObject().SetNewKitchenObjectParent(this);
+                        _cuttingDuration = 0;
 
-                    int maxCuttingDuration = GetCuttingRecipeSOFromInput(GetKitchenObject().GetKitchenObjectSO).cuttingDurationMax;
-                    OnProgressChanged?.Invoke(this, new IHasProgress.OnProgressChangedEventArgs {
-                        progressNormalized = (float)_cuttingDuration / maxCuttingDuration
-                    });
-                }
-            } else if (!player.HasKitchenObject()){ // if counter is not empty and player is not holding anything
-                GetKitchenObject().SetNewKitchenObjectParent(player);
-            }
+                        int maxCuttingDuration = GetCuttingRecipeSOFromInput(GetKitchenObject().GetKitchenObjectSO).cuttingDurationMax;
+                        OnProgressChanged?.Invoke(this, new IHasProgress.OnProgressChangedEventArgs {
+                            progressNormalized = (float)_cuttingDuration / maxCuttingDuration
+                        });
+                    }
+                    break;
+
+                case true: // if counter is not empty
+                    if (player.HasKitchenObject() && player.GetKitchenObject().TryGetPlate(out PlateKitchenObject plate)) { 
+                        TryAddIngredientToPlate(plate);
+                    } else if (!player.HasKitchenObject()) { // if counter is not empty and player is not holding anything
+                        GetKitchenObject().SetNewKitchenObjectParent(player);
+                    }
+                        
+                    break;
+                
+            }        
         }
-
         public override void InteractAlternate(Player player) {
             if (HasKitchenObject() && HasCuttingRecipe(GetKitchenObject().GetKitchenObjectSO)) {
                 _cuttingDuration++;
@@ -57,6 +66,15 @@ namespace NikolayTabalyov {
                     GetKitchenObject().DestroySelf();
                     KitchenObject.SpawnKitchenObject(GetOutputFromInput(kitchenObjectSO), this);
                 }
+            }
+        }
+
+        private bool TryAddIngredientToPlate(PlateKitchenObject plate) {
+            if (plate.TryAddIngredient(GetKitchenObject().GetKitchenObjectSO)) {
+                GetKitchenObject().DestroySelf();
+                return true;
+            } else {
+                return false;
             }
         }
 

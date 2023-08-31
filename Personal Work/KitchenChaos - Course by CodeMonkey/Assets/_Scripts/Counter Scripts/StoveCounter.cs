@@ -97,32 +97,58 @@ namespace NikolayTabalyov
 
         #region Other Methods
         public override void Interact(Player player) {
-            if (!HasKitchenObject()) { // if counter is empty
-                if (player.HasKitchenObject() && HasFryingRecipe(player.GetKitchenObject().GetKitchenObjectSO)) { 
-                    // if player is holding something and it can be fried
-                    player.GetKitchenObject().SetNewKitchenObjectParent(this);
+            switch (HasKitchenObject()) {
+                case false: // if counter is empty
+                    if (player.HasKitchenObject() && HasFryingRecipe(player.GetKitchenObject().GetKitchenObjectSO)) { 
+                        // if player is holding something and it can be fried
+                        player.GetKitchenObject().SetNewKitchenObjectParent(this);
 
-                    _fryingTimer = 0f;
-                    _currentState = State.Frying;
-                    OnStateChanged?.Invoke(this, new OnStateChangedEventArgs {
-                        state = _currentState
-                    });
+                        _fryingTimer = 0f;
+                        _currentState = State.Frying;
+                        OnStateChanged?.Invoke(this, new OnStateChangedEventArgs {
+                            state = _currentState
+                        });
 
-                    _fryingRecipeSO = GetFryingRecipeSOFromInput(GetKitchenObject().GetKitchenObjectSO);
-                }
-            } else if (!player.HasKitchenObject()){ // if counter is not empty and player is not holding anything
-                GetKitchenObject().SetNewKitchenObjectParent(player);
-                _currentState = State.Empty;
-                OnStateChanged?.Invoke(this, new OnStateChangedEventArgs {
-                    state = _currentState
-                });
+                        _fryingRecipeSO = GetFryingRecipeSOFromInput(GetKitchenObject().GetKitchenObjectSO);
+                    }
+                    break;
+
+                case true: // if counter is not empty
+                    if (player.HasKitchenObject() && player.GetKitchenObject().TryGetPlate(out PlateKitchenObject plate)) { 
+                        if (TryAddIngredientToPlate(plate)) // if ingredient was added to plate
+                            SetStoveToStartState();
+                    } else if (!player.HasKitchenObject()) { // if player is not holding anything
+                        GetKitchenObject().SetNewKitchenObjectParent(player);
+                        SetStoveToStartState();
+                    }
+                    break;
+            } 
+        }
+            // } else if (!player.HasKitchenObject()){ // if counter is not empty and player is not holding anything
+            //     GetKitchenObject().SetNewKitchenObjectParent(player);
                 
-                OnProgressChanged?.Invoke(this, new IHasProgress.OnProgressChangedEventArgs {
-                    progressNormalized = 0f
-                });
+            //     SetStoveToStartState();
+            // }
+        
+        private bool TryAddIngredientToPlate(PlateKitchenObject plate) {
+            if (plate.TryAddIngredient(GetKitchenObject().GetKitchenObjectSO)) {
+                GetKitchenObject().DestroySelf();
+                return true;
+            } else {
+                return false;
             }
         }
 
+        private void SetStoveToStartState() {
+            _currentState = State.Empty;
+            OnStateChanged?.Invoke(this, new OnStateChangedEventArgs {
+                state = _currentState
+            });
+
+            OnProgressChanged?.Invoke(this, new IHasProgress.OnProgressChangedEventArgs {
+                progressNormalized = 0f
+            });
+        }
         private bool HasFryingRecipe(KitchenObjectSO inputKitchenObjectSO) {
             return _fryingRecipeSOList.Find(fryingRecipeSO => fryingRecipeSO.input == inputKitchenObjectSO) is not null;  
         }   // returns true if there is a frying recipe for the input

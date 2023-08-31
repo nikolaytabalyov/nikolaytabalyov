@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace NikolayTabalyov {
@@ -19,23 +20,19 @@ namespace NikolayTabalyov {
                     if (player.HasKitchenObject()) { // if player is holding something
                         player.GetKitchenObject().SetNewKitchenObjectParent(this);
                     }
-                break;
+                    break;
 
                 case true: // if counter is not empty
-                    if (IsPlayerHoldingPlate(player)) { 
-                        TryAddIngredientToPlate(player);
+                    if (player.HasKitchenObject() && player.GetKitchenObject().TryGetPlate(out PlateKitchenObject plate)) { 
+                        TryAddIngredientToPlate(plate);
+                    } else if (!player.HasKitchenObject()) { // if counter is not empty and player is not holding anything
+                        GetKitchenObject().SetNewKitchenObjectParent(player);
                     }
                     break;
             }
         }
-        
 
-        private bool IsPlayerHoldingPlate(Player player) {
-            return player.HasKitchenObject() && player.GetKitchenObject() is PlateKitchenObject;
-        }
-
-        private bool TryAddIngredientToPlate(Player player) {
-            PlateKitchenObject plate = player.GetKitchenObject() as PlateKitchenObject;
+        private bool TryAddIngredientToPlate(PlateKitchenObject plate) {
             if (plate.TryAddIngredient(GetKitchenObject().GetKitchenObjectSO)) {
                 GetKitchenObject().DestroySelf();
                 return true;
