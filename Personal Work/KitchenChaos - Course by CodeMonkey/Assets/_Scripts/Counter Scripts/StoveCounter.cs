@@ -116,6 +116,10 @@ namespace NikolayTabalyov
                 OnStateChanged?.Invoke(this, new OnStateChangedEventArgs {
                     state = _currentState
                 });
+                
+                OnProgressChanged?.Invoke(this, new IHasProgress.OnProgressChangedEventArgs {
+                    progressNormalized = 0f
+                });
             }
         }
 
