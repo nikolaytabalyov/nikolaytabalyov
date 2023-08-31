@@ -6,6 +6,7 @@ namespace NikolayTabalyov
     public class PlateCounter : BaseCounter {
     
         public event EventHandler OnPlateSpawned;
+        public event EventHandler OnPlateRemoved;
         #region Variables
         [Header("Variables")]
         private float _spawnTimer = 0f;
@@ -34,7 +35,13 @@ namespace NikolayTabalyov
         #endregion
     
         #region Other Methods
-    
+        public override void Interact(Player player) {
+            if (_spawnedPlatesAmount > 0) {
+                _spawnedPlatesAmount--;
+                KitchenObject.SpawnKitchenObject(_kitchenObjectSO, player);
+                OnPlateRemoved?.Invoke(this, EventArgs.Empty);
+            }
+        }
         #endregion
     }
 }

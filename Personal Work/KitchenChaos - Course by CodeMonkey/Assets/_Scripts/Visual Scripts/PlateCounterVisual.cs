@@ -22,6 +22,13 @@ namespace NikolayTabalyov
         #region Unity Methods
         private void Start() {
             _plateCounter.OnPlateSpawned += PlateCounter_OnPlateSpawned;
+            _plateCounter.OnPlateRemoved += PlateCounter_OnPlateRemoved;
+        }
+
+        private void PlateCounter_OnPlateRemoved(object sender, EventArgs e) {
+            Transform removedPlate = _plateVisualsList[_plateVisualsList.Count - 1];
+            _plateVisualsList.Remove(removedPlate);
+            Destroy(removedPlate.gameObject);
         }
 
         private void PlateCounter_OnPlateSpawned(object sender, EventArgs e) {
