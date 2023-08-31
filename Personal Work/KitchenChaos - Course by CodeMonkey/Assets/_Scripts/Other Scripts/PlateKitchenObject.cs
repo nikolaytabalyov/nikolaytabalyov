@@ -7,6 +7,8 @@ namespace NikolayTabalyov
     
         #region Variables
         [Header("Variables")]
+        [SerializeField] private List<KitchenObjectSO> _validIngredientsSOList;
+
         private List<KitchenObjectSO> _ingredientsSOList;
         #endregion
     
@@ -22,6 +24,9 @@ namespace NikolayTabalyov
     
         #region Other Methods
         public bool TryAddIngredient(KitchenObjectSO ingredient) {
+            if (!_validIngredientsSOList.Contains(ingredient)) { // Ingredient is not valid
+                return false;
+            } 
             if (_ingredientsSOList.Contains(ingredient)) { // List already contains this ingredient
                 return false;
             } else { // List doesn't contain this ingredient
