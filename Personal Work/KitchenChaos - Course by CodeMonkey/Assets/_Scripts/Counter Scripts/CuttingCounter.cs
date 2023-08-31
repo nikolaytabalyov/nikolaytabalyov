@@ -4,12 +4,9 @@ using System.Linq;
 using UnityEngine;
 
 namespace NikolayTabalyov {
-    public class CuttingCounter : BaseCounter {
+    public class CuttingCounter : BaseCounter, IHasProgress {
     
-        public event EventHandler<OnCuttingProgressChangedEventArgs> OnCuttingProgressChanged;
-        public class OnCuttingProgressChangedEventArgs : EventArgs {
-            public float cuttingProgressNormalized;
-        }
+        public event EventHandler<IHasProgress.OnCuttingProgressChangedEventArgs> OnCuttingProgressChanged;
 
         public event EventHandler OnCut;
 
@@ -36,7 +33,7 @@ namespace NikolayTabalyov {
                     _cuttingDuration = 0;
 
                     int maxCuttingDuration = GetCuttingRecipeSOFromInput(GetKitchenObject().GetKitchenObjectSO).cuttingDurationMax;
-                    OnCuttingProgressChanged?.Invoke(this, new OnCuttingProgressChangedEventArgs {
+                    OnCuttingProgressChanged?.Invoke(this, new IHasProgress.OnCuttingProgressChangedEventArgs {
                         cuttingProgressNormalized = (float)_cuttingDuration / maxCuttingDuration
                     });
                 }
@@ -51,7 +48,7 @@ namespace NikolayTabalyov {
                 OnCut?.Invoke(this, EventArgs.Empty);
                 
                 int maxCuttingDuration = GetCuttingRecipeSOFromInput(GetKitchenObject().GetKitchenObjectSO).cuttingDurationMax;
-                OnCuttingProgressChanged?.Invoke(this, new OnCuttingProgressChangedEventArgs {
+                OnCuttingProgressChanged?.Invoke(this, new IHasProgress.OnCuttingProgressChangedEventArgs {
                     cuttingProgressNormalized = (float)_cuttingDuration / maxCuttingDuration
                 });
 

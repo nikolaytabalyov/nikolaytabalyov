@@ -17,17 +17,22 @@ namespace NikolayTabalyov
         #region Components
         [Header("Components")]
         [SerializeField] private Image _progressBarImage;
-        [SerializeField] private CuttingCounter _cuttingCounter;    
+        [SerializeField] private GameObject _hasProgressGameObject; 
+        private IHasProgress _hasProgress;    
         #endregion
     
         #region Unity Methods
         private void Start() {
-            _cuttingCounter.OnCuttingProgressChanged += CuttingCounter_OnCuttingProgressChanged;
+            _hasProgress = _hasProgressGameObject.GetComponent<IHasProgress>(); 
+            if (_hasProgress is null) 
+                Debug.LogError("No IHasProgress component found on " + _hasProgressGameObject);
+                
+            _hasProgress.OnCuttingProgressChanged += IHasProgress_OnCuttingProgressChanged;
             _progressBarImage.fillAmount = _emptyProgressAmount;
             Hide(); 
         }
 
-        private void CuttingCounter_OnCuttingProgressChanged(object sender, CuttingCounter.OnCuttingProgressChangedEventArgs e) {
+        private void IHasProgress_OnCuttingProgressChanged(object sender, IHasProgress.OnCuttingProgressChangedEventArgs e) {
             _progressBarImage.fillAmount = e.cuttingProgressNormalized; 
 
             if (_progressBarImage.fillAmount == _filledProgressAmount || _progressBarImage.fillAmount == _emptyProgressAmount) {

@@ -284,7 +284,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _progressBarImage: {fileID: 3130525262404981784}
-  _cuttingCounter: {fileID: 5010193695038080774}
+  _hasProgressGameObject: {fileID: 995119081723356799}
 --- !u!114 &2066391069551954728
 MonoBehaviour:
   m_ObjectHideFlags: 0
