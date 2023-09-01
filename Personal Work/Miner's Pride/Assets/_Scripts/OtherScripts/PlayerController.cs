@@ -19,12 +19,12 @@ public class PlayerController : MonoBehaviour {
     [SerializeField] private PlayerDataSO _playerData;
     [SerializeField] private Transform _attackPoint;
     [SerializeField] private Transform _pickaxeBoomerangPrefab;
-    private Rigidbody _rb;
+    private Rigidbody2D _rb;
     #endregion
     
     #region Unity Methods
     private void Awake() {
-        _rb = GetComponent<Rigidbody>();
+        _rb = GetComponent<Rigidbody2D>();
         _health = _playerData.maxHealth;
         _primaryAttackDamage = _playerData.primaryAttackDamage;
         _secondaryAttackDamage = _playerData.secondaryAttackDamage;
