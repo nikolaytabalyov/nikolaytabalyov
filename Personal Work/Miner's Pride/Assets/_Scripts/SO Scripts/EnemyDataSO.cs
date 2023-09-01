@@ -9,6 +9,7 @@ using UnityEngine;
 		public int attackDamage;
 		public float attackRange;
 		public float attackSpeed;
+		public float movementSpeed;
 		#endregion
         
 		#region Methods

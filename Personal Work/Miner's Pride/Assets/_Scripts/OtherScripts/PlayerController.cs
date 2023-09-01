@@ -17,6 +17,8 @@ public class PlayerController : MonoBehaviour {
     #region Components
     [Header("Components")]
     [SerializeField] private PlayerDataSO _playerData;
+    [SerializeField] private Transform _attackPoint;
+    [SerializeField] private Transform _pickaxeBoomerangPrefab;
     private Rigidbody _rb;
     #endregion
     
@@ -31,14 +33,18 @@ public class PlayerController : MonoBehaviour {
     private void Update() {
         _movement = GetNormalizedMovementInput();
         HandleMovement(_movement);
+        if (Input.GetMouseButtonDown(0)) {
+            Attack();
+        }
     }
 
-    private void FixedUpdate() {
-        
+    private void Attack() {
+        Instantiate(_pickaxeBoomerangPrefab, _attackPoint.position, _attackPoint.rotation);
     }
     #endregion
-    
+
     #region Other Methods
+
     private Vector3 GetNormalizedMovementInput() {
         _horizontalInput = Input.GetAxis("Horizontal");
         _verticalInput = Input.GetAxis("Vertical");
