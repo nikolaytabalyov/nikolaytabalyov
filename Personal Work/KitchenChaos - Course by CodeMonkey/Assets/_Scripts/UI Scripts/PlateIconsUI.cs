@@ -12,10 +12,13 @@ namespace NikolayTabalyov
         #region Components
         [Header("Components")]
         [SerializeField] private PlateKitchenObject _plateKitchenObject;
+        [SerializeField] private Transform _plateIconTemplate;
         #endregion
     
         #region Unity Methods
-    
+        private void Awake() {
+            _plateIconTemplate.gameObject.SetActive(false);
+        }
         #endregion
     
         #region Other Methods
@@ -28,7 +31,15 @@ namespace NikolayTabalyov
         }
 
         private void UpdateVisuals() {
-
+            foreach (Transform child in transform) {
+                if (child != _plateIconTemplate)
+                    Destroy(child.gameObject);
+            }
+            foreach (KitchenObjectSO kitchenObjectSO in _plateKitchenObject.GetIngredientsSOList) {
+                Transform iconTransform = Instantiate(_plateIconTemplate, transform);
+                iconTransform.gameObject.SetActive(true);
+                iconTransform.GetComponent<PlateIconSingleUI>().SetIconImageFromKitchenObjectSO(kitchenObjectSO);
+            }
         }
         #endregion
     }

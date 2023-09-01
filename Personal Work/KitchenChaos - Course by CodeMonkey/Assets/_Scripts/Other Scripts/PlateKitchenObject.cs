@@ -16,6 +16,8 @@ namespace NikolayTabalyov
         [SerializeField] private List<KitchenObjectSO> _validIngredientsSOList;
 
         private List<KitchenObjectSO> _ingredientsSOList;
+        public List<KitchenObjectSO> GetIngredientsSOList => _ingredientsSOList;
+
         #endregion
     
         #region Components

@@ -16,7 +16,6 @@ namespace NikolayTabalyov
         [Header("Variables")]
         [SerializeField] private List<IngredientSOGameObject> _ingredientSOGameObjectsList = new();
 
-        public List<IngredientSOGameObject> GetIngredientSOGameObjectsList => _ingredientSOGameObjectsList;
         #endregion
     
         #region Components
