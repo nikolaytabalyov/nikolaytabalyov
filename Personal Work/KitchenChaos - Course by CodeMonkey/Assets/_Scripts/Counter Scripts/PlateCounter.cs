@@ -36,10 +36,12 @@ namespace NikolayTabalyov
     
         #region Other Methods
         public override void Interact(Player player) {
-            if (_spawnedPlatesAmount > 0) {
-                _spawnedPlatesAmount--;
-                KitchenObject.SpawnKitchenObject(_kitchenObjectSO, player);
-                OnPlateRemoved?.Invoke(this, EventArgs.Empty);
+            if (!player.HasKitchenObject()) {
+                if (_spawnedPlatesAmount > 0) {
+                    _spawnedPlatesAmount--;
+                    KitchenObject.SpawnKitchenObject(_kitchenObjectSO, player);
+                    OnPlateRemoved?.Invoke(this, EventArgs.Empty);
+                }
             }
         }
         #endregion
