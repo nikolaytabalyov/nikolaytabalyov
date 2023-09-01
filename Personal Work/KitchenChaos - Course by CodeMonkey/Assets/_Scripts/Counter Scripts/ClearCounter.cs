@@ -24,7 +24,9 @@ namespace NikolayTabalyov {
 
                 case true: // if counter is not empty
                     if (player.HasKitchenObject()) { // if player is holding something
-                        TryAddIngredientToCounter(player);
+                        if (!TryAddIngredientToCounter(player)) { // if counter is not empty and it doesn't have a plate
+                            TryAddIngredientToPlateFromCounter(player); 
+                        }
                     } else if (!player.HasKitchenObject()) { // if counter is not empty and player is not holding anything
                         GetKitchenObject().SetNewKitchenObjectParent(player);
                     }
@@ -41,10 +43,20 @@ namespace NikolayTabalyov {
                 } else {
                     return false;
                 }
-            } else { // if there is no plate on counter
+            } else {
                 return false;
             }
         }
+
+        private bool TryAddIngredientToPlateFromCounter(Player player) {
+            if (player.GetKitchenObject().TryGetPlate(out PlateKitchenObject plateOnPlayer)) {
+                //^^^ if player is holding a plate and there is something that isn't a plate on counter
+                return TryAddIngredientToPlate(plateOnPlayer);
+            } else { // if player is holding something that isn't a plate and there is something that isn't a plate on counter
+                return false;
+            }
+        }
+
         private bool TryAddIngredientToPlate(PlateKitchenObject plate) {
             if (plate.TryAddIngredient(GetKitchenObject().GetKitchenObjectSO)) {
                 GetKitchenObject().DestroySelf();

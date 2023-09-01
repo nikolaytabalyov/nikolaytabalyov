@@ -1,10 +1,16 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace NikolayTabalyov
 {
     public class PlateKitchenObject : KitchenObject {
-    
+        
+        public event EventHandler<OnIngredientAddedEventArgs> OnIngredientAdded;
+        public class OnIngredientAddedEventArgs : EventArgs {
+            public KitchenObjectSO addedIngredientSO;
+        }
+        
         #region Variables
         [Header("Variables")]
         [SerializeField] private List<KitchenObjectSO> _validIngredientsSOList;
@@ -31,6 +37,11 @@ namespace NikolayTabalyov
                 return false;
             } else { // List doesn't contain this ingredient
                 _ingredientsSOList.Add(ingredient);
+
+                OnIngredientAdded?.Invoke(this, new OnIngredientAddedEventArgs {
+                    addedIngredientSO = ingredient
+                });
+                
                 return true;
             }
         }
