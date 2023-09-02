@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour {
@@ -27,6 +28,8 @@ public class Enemy : MonoBehaviour {
     [SerializeField] private EnemyDataSO _enemyData;
     [SerializeField] private AISensor _aiSensor;
     [SerializeField] private Transform _targetTransform;
+    [SerializeField] private Transform _attackPoint;
+    [SerializeField] private Transform _enemyProjectilePrefab;
     #endregion
 
     #region Unity Methods
@@ -42,6 +45,18 @@ public class Enemy : MonoBehaviour {
     private void Start() {
         _aiSensor.OnTargetDetected += Enemy_OnTargetDetected;
         _aiSensor.OnTargetLost += Enemy_OnTargetLost;
+        _aiSensor.OnTargetEnterAttackRange += Enemy_OnTargetEnterAttackRange;
+        _aiSensor.OnTargetExitAttackRange += Enemy_OnTargetExitAttackRange;
+    }
+
+    private void Enemy_OnTargetExitAttackRange(object sender, EventArgs e) {
+        SwitchState(EnemyState.Chase);
+        Attack();
+    }
+
+    private void Enemy_OnTargetEnterAttackRange(object sender, EventArgs e) {
+        SwitchState(EnemyState.Attack);
+        Attack();
     }
 
     private void Update() {
@@ -51,8 +66,32 @@ public class Enemy : MonoBehaviour {
 
     #region Other Methods
 
+    private void Attack() {
+        while (_enemyState == EnemyState.Attack) {
+            Instantiate(_enemyProjectilePrefab, _attackPoint.position, _attackPoint.rotation);
+        }
+    }
+
+    private void SwitchState(EnemyState enemyState) {
+        switch (enemyState) {
+            case EnemyState.Idle:
+                _enemyState = EnemyState.Idle;
+                break;
+            case EnemyState.Chase:
+                _enemyState = EnemyState.Chase;
+                break;
+            case EnemyState.Attack:
+                _enemyState = EnemyState.Attack;
+                break;
+            case EnemyState.Dead:
+                _enemyState = EnemyState.Dead;
+                break;
+            default:
+                throw new ArgumentOutOfRangeException(nameof(enemyState), enemyState, null);
+        }
+    }
     private void Enemy_OnTargetLost(object sender, EventArgs e) {
-        _enemyState = EnemyState.Idle;
+        SwitchState(EnemyState.Idle);
     }
 
     private void Enemy_OnTargetDetected(object sender, AISensor.OnTargetDetectedEventArgs e) {

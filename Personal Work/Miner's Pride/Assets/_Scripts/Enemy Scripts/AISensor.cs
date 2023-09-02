@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class AISensor : MonoBehaviour {
 
+    public event EventHandler OnTargetEnterAttackRange;
+    public event EventHandler OnTargetExitAttackRange;
     public event EventHandler<OnTargetDetectedEventArgs> OnTargetDetected;
     public class OnTargetDetectedEventArgs : EventArgs {
         public Collider2D targetColliderArgs;
@@ -14,6 +16,7 @@ public class AISensor : MonoBehaviour {
     [SerializeField] private float _detectRadius;
     [SerializeField] private float _attackRange;
     [SerializeField] private bool _isTargetDetected;
+    [SerializeField] private bool _isTargetOutOfAttackRange = true;
     #endregion
 
     #region Components
@@ -25,12 +28,32 @@ public class AISensor : MonoBehaviour {
     #region Unity Methods
     private void Update() {
         if (CheckForTargetInDetectRange(out Collider2D targetCollider)) { 
-            CheckIfTargetBehindObstacle(targetCollider, out RaycastHit2D hit);  
+            CheckIfTargetBehindObstacle(targetCollider, out RaycastHit2D hit);
+            CheckForTargetInAttackRange();  
         }
     }
     #endregion
     
     #region Other Methods
+    private bool CheckForTargetInAttackRange() {
+        bool isInAttackRange = Physics2D.OverlapCircle(transform.position, _attackRange, _targetLayer);
+        
+        if (isInAttackRange) {
+            if (_isTargetOutOfAttackRange) {
+                OnTargetEnterAttackRange?.Invoke(this, EventArgs.Empty);
+                _isTargetOutOfAttackRange = false;
+            }
+            return true;
+        } else {
+            if (!_isTargetOutOfAttackRange) {
+                OnTargetExitAttackRange?.Invoke(this, EventArgs.Empty);
+                _isTargetOutOfAttackRange = true;
+            }
+            return false;
+        }
+        
+    }
+    
     private bool CheckForTargetInDetectRange(out Collider2D targetCollider) {
         bool isInDetectRange = Physics2D.OverlapCircle(transform.position, _detectRadius, _targetLayer);
         Collider2D targetColliderStart = Physics2D.OverlapCircle(transform.position, _detectRadius, _targetLayer);
@@ -40,11 +63,19 @@ public class AISensor : MonoBehaviour {
                 return true;
             } else {
                 targetCollider = null;
+                //targetCollider = GetComponent<Collider2D>();
                 return false;
             }
         } else {
-            targetCollider = targetColliderStart;
-            return true;
+            if (targetColliderStart != null) {
+                targetCollider = targetColliderStart;
+                return true;
+            } else {
+                targetCollider = null;
+                _isTargetDetected = false;
+                OnTargetLost?.Invoke(this, EventArgs.Empty);
+                return false;
+            }
         }
     }
 

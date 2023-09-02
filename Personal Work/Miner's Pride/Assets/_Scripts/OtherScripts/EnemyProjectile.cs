@@ -29,6 +29,8 @@ public class EnemyProjectile : MonoBehaviour {
         if (other.gameObject.CompareTag("Player")) {
             OnEnemyProjectileHit?.Invoke(this, new OnEnemyProjectileHitEventArgs {damageArgs = _damage});
             Destroy(gameObject);
+        } else if (other.gameObject.CompareTag("Wall")) {
+            Destroy(gameObject);
         }
     }
     #endregion

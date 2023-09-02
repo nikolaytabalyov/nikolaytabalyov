@@ -20,7 +20,6 @@ public class PlayerController : MonoBehaviour {
     private float _horizontalInput;
     private float _verticalInput;
     [SerializeField] private Vector2 _movement;
-    private bool _canMove = true;
     #endregion
     
     #region Components
@@ -48,9 +47,8 @@ public class PlayerController : MonoBehaviour {
     }
 
     private void FixedUpdate() {
-        if (_canMove) {
-            _rb.MovePosition(_rb.position + _movement * _speed * Time.fixedDeltaTime);
-        }
+        _rb.MovePosition(_rb.position + _movement * _speed * Time.fixedDeltaTime);
+        //HandleMovement(_movement);
     }
     private void Attack() {
         if (_throwState == ThrowState.CanThrow) {
