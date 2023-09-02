@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Enemy
   - Pickaxe Boomerang
+  - Wall
+  - Enemy Projectile
   layers:
   - Default
   - TransparentFX
@@ -13,11 +15,11 @@ TagManager:
   - 
   - Water
   - UI
-  - 
+  - Background
   - Enemy
   - Player
-  - 
-  - 
+  - Walls
+  - Projectiles
   - 
   - 
   - 
@@ -42,4 +44,19 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Backgound
+    uniqueID: 3963581203
+    locked: 0
+  - name: Walls
+    uniqueID: 313041915
+    locked: 0
+  - name: Enemies
+    uniqueID: 4126249813
+    locked: 0
+  - name: Player
+    uniqueID: 1312119367
+    locked: 0
+  - name: Projectiles
+    uniqueID: 4279467197
     locked: 0

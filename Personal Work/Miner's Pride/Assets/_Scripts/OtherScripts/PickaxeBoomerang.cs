@@ -57,5 +57,11 @@ public class PickaxeBoomerang : MonoBehaviour {
         transform.Rotate(0f, 0f, _rotationSpeed * Time.deltaTime);
     }
 
+    private void OnTriggerEnter2D(Collider2D other) {
+        if (other.CompareTag("Wall")) {
+            _isReturning = true;
+        }
+    }
+
     #endregion
 }

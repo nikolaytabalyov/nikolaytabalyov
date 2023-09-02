@@ -1,11 +1,18 @@
+
 using System;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour {
     private const string PICKAXE_BOOMERANG_TAG = "Pickaxe Boomerang";
 
+    public enum ThrowState {
+        CanThrow,
+        CannotThrow
+    }
+
     #region Variables
     [Header("Variables")]
+    [SerializeField] private ThrowState _throwState;
     [SerializeField] private float _speed = 5f;
     [SerializeField] private float _health;
     [SerializeField] private float _primaryAttackDamage;
@@ -13,6 +20,7 @@ public class PlayerController : MonoBehaviour {
     private float _horizontalInput;
     private float _verticalInput;
     [SerializeField] private Vector2 _movement;
+    private bool _canMove = true;
     #endregion
     
     #region Components
@@ -22,7 +30,7 @@ public class PlayerController : MonoBehaviour {
     [SerializeField] private Transform _pickaxeBoomerangPrefab;
     private Rigidbody2D _rb;
     #endregion
-    
+
     #region Unity Methods
     private void Awake() {
         _rb = GetComponent<Rigidbody2D>();
@@ -33,14 +41,22 @@ public class PlayerController : MonoBehaviour {
 
     private void Update() {
         _movement = GetNormalizedMovementInput();
-        HandleMovement(_movement);
+        //HandleMovement(_movement);
         if (Input.GetMouseButtonDown(0)) {
             Attack();
         }
     }
 
+    private void FixedUpdate() {
+        if (_canMove) {
+            _rb.MovePosition(_rb.position + _movement * _speed * Time.fixedDeltaTime);
+        }
+    }
     private void Attack() {
-        Instantiate(_pickaxeBoomerangPrefab, _attackPoint.position, _attackPoint.rotation);
+        if (_throwState == ThrowState.CanThrow) {
+            Instantiate(_pickaxeBoomerangPrefab, _attackPoint.position, _attackPoint.rotation);
+            _throwState = ThrowState.CannotThrow;
+        }
     }
     #endregion
 
@@ -55,19 +71,29 @@ public class PlayerController : MonoBehaviour {
     }
 
     private void HandleMovement(Vector3 movement) {
-        if (!movement.Equals(Vector3.zero)) {
-            float xVelocity = movement.x * _speed * Time.deltaTime;
-            float yVelocity = movement.y * _speed * Time.deltaTime;
-            transform.position += new Vector3(xVelocity, yVelocity, 0f);
-        } else {
-            _rb.velocity = Vector3.zero;
-        }
+        float xVelocity = movement.x * _speed * Time.deltaTime;
+        float yVelocity = movement.y * _speed * Time.deltaTime;
+        _rb.velocity = new Vector2(xVelocity, yVelocity);
     }
 
     private void OnTriggerEnter2D(Collider2D other) {
         if (other.CompareTag(PICKAXE_BOOMERANG_TAG)) {
             Destroy(other.gameObject);
+            _throwState = ThrowState.CanThrow;
         }
     }
+
+    // private void OnCollisionEnter2D(Collision2D other) {
+    //     if (other.gameObject.CompareTag("Wall")) {
+    //         _canMove = false;
+    //     }
+    // }
+
+    // private void OnCollisionStay2D(Collision2D other) {
+    //     Vector3 input = GetNormalizedMovementInput();
+    //     if (other.gameObject.CompareTag("Wall") || GetNormalizedMovementInput().Equals(Vector3.zero)) {
+    //         _canMove = true;
+    //     }
+    // }
     #endregion
 }
