@@ -56,14 +56,6 @@ public class PickaxeBoomerang : MonoBehaviour {
     private void RotatePickaxeBoomerang() {
         transform.Rotate(0f, 0f, _rotationSpeed * Time.deltaTime);
     }
-    private void OnTriggerEnter2D(Collider2D other) {
-        if (other.CompareTag("Enemy")) {
-            Destroy(other.gameObject);
-        } else if (other.CompareTag("Player")) {
-            Destroy(gameObject);
-        }
-        
-    }
 
     #endregion
 }

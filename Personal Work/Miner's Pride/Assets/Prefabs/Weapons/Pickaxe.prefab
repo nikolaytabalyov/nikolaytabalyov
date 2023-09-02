@@ -95,10 +95,9 @@ GameObject:
   - component: {fileID: 1304390150746929715}
   - component: {fileID: 1831826292553436211}
   - component: {fileID: 8241799060961297990}
-  - component: {fileID: 127800688455502202}
   m_Layer: 0
   m_Name: Pickaxe
-  m_TagString: Untagged
+  m_TagString: Pickaxe Boomerang
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -165,7 +164,7 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0.01078248, y: 0.03}
@@ -181,33 +180,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.9441874, y: 0.8839036}
   m_EdgeRadius: 0
---- !u!50 &127800688455502202
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8088747494514000866}
-  m_BodyType: 0
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 0
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!1 &8701371413498864361
 GameObject:
   m_ObjectHideFlags: 0

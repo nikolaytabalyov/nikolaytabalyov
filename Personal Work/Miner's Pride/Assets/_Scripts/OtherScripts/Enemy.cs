@@ -4,6 +4,7 @@ public class Enemy : MonoBehaviour {
     
     #region Variables
     [Header("Variables")]
+    private const string PICKAXE_BOOMERANG_TAG = "Pickaxe Boomerang";
     [SerializeField] private string _enemyName;
     [SerializeField] private float _health;
     [SerializeField] private float _attackDamage;
@@ -16,7 +17,7 @@ public class Enemy : MonoBehaviour {
     [Header("Components")]
     [SerializeField] private EnemyDataSO _enemyData;
     #endregion
-    
+
     #region Unity Methods
     private void Awake() {
         _enemyName = _enemyData.enemyName;
@@ -29,6 +30,10 @@ public class Enemy : MonoBehaviour {
     #endregion
     
     #region Other Methods
-    
+    private void OnTriggerEnter2D(Collider2D other) {
+        if (other.CompareTag(PICKAXE_BOOMERANG_TAG)) {
+            Destroy(gameObject);
+        }
+    }
     #endregion
 }

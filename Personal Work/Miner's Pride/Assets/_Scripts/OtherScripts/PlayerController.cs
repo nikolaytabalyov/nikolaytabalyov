@@ -2,7 +2,8 @@ using System;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour {
-    
+    private const string PICKAXE_BOOMERANG_TAG = "Pickaxe Boomerang";
+
     #region Variables
     [Header("Variables")]
     [SerializeField] private float _speed = 5f;
@@ -60,6 +61,12 @@ public class PlayerController : MonoBehaviour {
             transform.position += new Vector3(xVelocity, yVelocity, 0f);
         } else {
             _rb.velocity = Vector3.zero;
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D other) {
+        if (other.CompareTag(PICKAXE_BOOMERANG_TAG)) {
+            Destroy(other.gameObject);
         }
     }
     #endregion
