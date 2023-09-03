@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UIElements.Experimental;
 
 public class PickaxeBoomerang : MonoBehaviour {
     
@@ -8,6 +9,11 @@ public class PickaxeBoomerang : MonoBehaviour {
     [SerializeField] private float _rotationSpeed = 10f;
     [SerializeField] private float _returnSpeed;
     [SerializeField] private float _maxDistance = 10f;
+    public float MaxDistance {
+        get => _maxDistance;
+        set => _maxDistance = value;
+    }
+
     private Vector3 _startPosition;
     private bool _isReturning = false;
     private Vector3 _targetPosition;
@@ -38,7 +44,7 @@ public class PickaxeBoomerang : MonoBehaviour {
     
     #region Other Methods
     private void LauchPickaxeBoomerang() {
-        if (Vector3.Distance(transform.position, _targetPosition) > 0.1f) {
+        if (Vector3.Distance(transform.position, _targetPosition) > 0.6f) {
             transform.position = Vector3.Lerp(transform.position, _targetPosition, _speed * Time.deltaTime);
             _isReturning = false;
         } else {

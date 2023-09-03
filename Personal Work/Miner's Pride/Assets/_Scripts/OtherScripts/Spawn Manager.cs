@@ -5,8 +5,7 @@ public class SpawnManager : MonoBehaviour {
     
     #region Variables
     [Header("Variables")]
-    [SerializeField] private int _maxEnemies;
-    [SerializeField] private int _currentEnemies;
+    private int _enemiesPerWave;
 
     #endregion
     
@@ -18,23 +17,28 @@ public class SpawnManager : MonoBehaviour {
     
     #region Unity Methods
     private void Start() {
-        _currentEnemies = 0;
-        _maxEnemies = 3;
-        InvokeRepeating(nameof(SpawnEnemy), 1f, 1f);
+        _enemiesPerWave = 3;
     }
     
     private void Update() {
-        CheckForEnemyCount();
+        if (CheckForEnemyCount() == 0) {
+            StartWave();
+            _enemiesPerWave += 2;
+        }
     }
     #endregion
     
     #region Other Methods
-    private void CheckForEnemyCount() {
-        _currentEnemies = FindObjectsOfType<Enemy>().Length;
+    private int CheckForEnemyCount() {
+        return FindObjectsOfType<Enemy>().Length;
+    }
+    private void StartWave() {
+        for (int i = 0; i < _enemiesPerWave; i++) {
+            SpawnEnemy();
+        }
     }
     private void SpawnEnemy() {
-        if (_currentEnemies < _maxEnemies) {
-            _currentEnemies++;
+        if (CheckForEnemyCount() < _enemiesPerWave) {
             int randomSpawnPoint = Random.Range(0, _spawnPoints.Length);
             int randomEnemy = Random.Range(0, _enemyPrefabs.Length);
             GameObject spawnedEnemy = Instantiate(_enemyPrefabs[randomEnemy], _spawnPoints[randomSpawnPoint].position, Quaternion.identity);

@@ -21,6 +21,13 @@ public class PlayerController : MonoBehaviour {
     private float _horizontalInput;
     private float _verticalInput;
     [SerializeField] private Vector2 _movement;
+    [SerializeField] private float _primaryAttackRange;
+    [SerializeField] private float _secondaryAttackRange;
+    [SerializeField] private float _dashSpeed;
+    [SerializeField] private float _dashCooldown = 1f;
+    private bool _isDashing = false;
+    private bool _canDash = true;
+
     #endregion
     
     #region Components
@@ -28,39 +35,71 @@ public class PlayerController : MonoBehaviour {
     [SerializeField] private PlayerDataSO _playerData;
     [SerializeField] private Transform _attackPoint;
     [SerializeField] private Transform _pickaxeBoomerangPrefab;
+    private PickaxeBoomerang _pickaxeBoomerangScript;
     private Rigidbody2D _rb;
     #endregion
 
     #region Unity Methods
     private void Awake() {
         _rb = GetComponent<Rigidbody2D>();
+        _pickaxeBoomerangScript = _pickaxeBoomerangPrefab.GetComponent<PickaxeBoomerang>();
         _health = _playerData.maxHealth;
         _primaryAttackDamage = _playerData.primaryAttackDamage;
         _secondaryAttackDamage = _playerData.secondaryAttackDamage;
     }
    
     private void Update() {
-        // HandleMovement(_movement);
         _movement = GetNormalizedMovementInput();
-        if (Input.GetMouseButtonDown(0)) {
-            Attack();
+        HandleAttack();
+        HandleDash();
+        if (_dashCooldown >= 0 && _dashCooldown < 1f) {
+            _dashCooldown += Time.deltaTime;
+            _isDashing = false;
+        } else if (_dashCooldown >= 1f) {
+            _canDash = true;
         }
     }
 
     private void FixedUpdate() {
-        _rb.MovePosition(_rb.position + _movement * _speed * Time.fixedDeltaTime);
-        //HandleMovement(_movement);
+       if (!_isDashing && _dashCooldown >= 0.2f) {
+            _rb.MovePosition(_rb.position + _movement * _speed * Time.fixedDeltaTime);
+        }
     }
-    private void Attack() {
+    private void RangedAttack() {
         if (_throwState == ThrowState.CanThrow) {
+            _pickaxeBoomerangScript.MaxDistance = _primaryAttackRange;
             Instantiate(_pickaxeBoomerangPrefab, _attackPoint.position, _attackPoint.rotation);
+            _throwState = ThrowState.CannotThrow;
+        }
+    }
+    private void SecondaryAttack() {
+        if (_throwState == ThrowState.CanThrow) {
+            _pickaxeBoomerangScript.MaxDistance = _secondaryAttackRange;
+            Instantiate(_pickaxeBoomerangPrefab, _attackPoint.position, _attackPoint.rotation * Quaternion.Euler(0f, 0f, 25f));
+            Instantiate(_pickaxeBoomerangPrefab, _attackPoint.position, _attackPoint.rotation * Quaternion.Euler(0f, 0f, -25f));
             _throwState = ThrowState.CannotThrow;
         }
     }
     #endregion
 
     #region Other Methods
-
+    private void HandleDash() {
+        if (Input.GetKeyDown(KeyCode.Space) && _canDash) {
+            _isDashing = true;
+            _dashCooldown = 0f;
+            _rb.velocity = _movement * _dashSpeed;
+            _canDash = false;
+        } else if (Input.GetKeyUp(KeyCode.Space) || !_canDash) {
+            //_isDashing = false;
+        }
+    }
+    private void HandleAttack() {
+        if (Input.GetMouseButtonDown(0)) {
+            RangedAttack();
+        } else if (Input.GetMouseButtonDown(1)) {
+            SecondaryAttack();
+        }
+    }
     private Vector3 GetNormalizedMovementInput() {
         _horizontalInput = Input.GetAxis("Horizontal");
         _verticalInput = Input.GetAxis("Vertical");
@@ -81,18 +120,5 @@ public class PlayerController : MonoBehaviour {
             _throwState = ThrowState.CanThrow;
         }
     }
-
-    // private void OnCollisionEnter2D(Collision2D other) {
-    //     if (other.gameObject.CompareTag("Wall")) {
-    //         _canMove = false;
-    //     }
-    // }
-
-    // private void OnCollisionStay2D(Collision2D other) {
-    //     Vector3 input = GetNormalizedMovementInput();
-    //     if (other.gameObject.CompareTag("Wall") || GetNormalizedMovementInput().Equals(Vector3.zero)) {
-    //         _canMove = true;
-    //     }
-    // }
     #endregion
 }

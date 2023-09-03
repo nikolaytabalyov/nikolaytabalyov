@@ -12,6 +12,7 @@ using UnityEngine;
 		public float attackSpeed;
 		public float movementSpeed;
 		public float shootingMovementSpeed;
+		public float idleMovementSpeed;
 		#endregion
         
 		#region Methods

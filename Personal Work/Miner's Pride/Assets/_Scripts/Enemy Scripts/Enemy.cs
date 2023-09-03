@@ -41,6 +41,10 @@ public class Enemy : MonoBehaviour {
     private float _movementSpeed;
     private bool _isTargetInAttackRange;
     private float _attackTimer;
+    private float _changeDirectionTimer;
+    private bool _isCollidingWithWall;
+    [SerializeField] private float _idleMovementSpeed;
+    private float _raycastDistance = 2.5f;
     #endregion
     
     #region Components
@@ -50,7 +54,9 @@ public class Enemy : MonoBehaviour {
     [SerializeField] private Transform _targetTransform;
     [SerializeField] private Transform _attackPoint;
     [SerializeField] private Transform _enemyProjectilePrefab;
+    private Rigidbody2D _rb2D;
     private Collision2D _suicideAttackCollision;
+    [SerializeField] private LayerMask _obstacleLayerMask;
     #endregion
 
     #region Unity Methods
@@ -63,6 +69,8 @@ public class Enemy : MonoBehaviour {
         _movementSpeed = _enemyData.movementSpeed;
         _shootingMovementSpeed = _enemyData.shootingMovementSpeed;
         _enemyType = _enemyData.enemyType;
+        _idleMovementSpeed = _enemyData.idleMovementSpeed;
+        _rb2D = GetComponent<Rigidbody2D>();
     }
 
     private void Start() {
@@ -71,13 +79,17 @@ public class Enemy : MonoBehaviour {
         _aiSensor.OnTargetEnterAttackRange += Enemy_OnTargetEnterAttackRange;
         _aiSensor.OnTargetExitAttackRange += Enemy_OnTargetExitAttackRange;
         SetEnemyAttackMethod();
+        _changeDirectionTimer = 0f;
     }
 
 
     private void Update() {
         _attackTimer += Time.deltaTime;
-        if (_targetTransform != null) {
+        if (_targetTransform != null && _enemyState == EnemyState.Chase) {
             MoveTowardsTarget();
+        } else if (_enemyState == EnemyState.Idle) {
+            SetRandomDirection();
+            Wander();
         }
         _enemyAttackMethod?.Invoke();
         
@@ -94,6 +106,20 @@ public class Enemy : MonoBehaviour {
     }
 
     #region Other Methods
+    private void SetRandomDirection() {
+        if (_changeDirectionTimer > 0f) {
+            _changeDirectionTimer -= Time.deltaTime;
+        }  
+        if (_changeDirectionTimer <= 0f) {
+            float randomDirection = UnityEngine.Random.Range(0f, 360f);
+            transform.rotation = Quaternion.Euler(0f, 0f, randomDirection);
+            _changeDirectionTimer = UnityEngine.Random.Range(2f, 4f);
+        }
+    }
+
+    private void Wander() {
+        _rb2D.velocity = transform.up * _idleMovementSpeed;
+    }
     private void SetEnemyAttackMethod() {
         switch(_enemyType) {
             case EnemyType.Suicidal:
@@ -152,13 +178,31 @@ public class Enemy : MonoBehaviour {
     }
 
     private void OnCollisionEnter2D(Collision2D other) {
-        if (_enemyType == EnemyType.Suicidal) {
+        if (_enemyType == EnemyType.Suicidal && other.gameObject.CompareTag("Player")) {
             _suicideAttackCollision = other;
             SuicideAttack();
+        } 
+        if (other.gameObject.CompareTag("Wall") || other.gameObject.CompareTag("Enemy")) {
+            GetOffWallOrEnemy();
         }
     }
+
+    private void GetOffWallOrEnemy() {
+        //transform.rotation = Quaternion.Inverse(transform.rotation);
+        // Cast a ray in the direction the enemy is facing
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.right, _raycastDistance, _obstacleLayerMask);
+
+        if (hit.collider != null) {
+            // Rotate away from the wall or enemy
+            transform.rotation = Quaternion.LookRotation(Vector3.forward, hit.normal);
+        } else {
+            // Rotate 180 degrees if no obstacle is detected
+            transform.rotation *= Quaternion.Euler(0, 0, 180);
+        }
+    }
+
     private void SuicideAttack() {
-        if (_suicideAttackCollision != null && _suicideAttackCollision.gameObject.CompareTag("Player")) {
+        if (_suicideAttackCollision != null) {
             Destroy(gameObject);
         }
     }

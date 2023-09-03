@@ -130,7 +130,7 @@ GameObject:
   - component: {fileID: 8241799060961297990}
   - component: {fileID: 4139329643348423461}
   m_Layer: 10
-  m_Name: Pickaxe
+  m_Name: Pickaxe Boomerang
   m_TagString: Pickaxe Boomerang
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
