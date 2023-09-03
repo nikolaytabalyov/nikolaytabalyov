@@ -12,9 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b7c959fe96c8f354aa9d81e80fb5e7cf, type: 3}
   m_Name: BasicEnemyDataSO
   m_EditorClassIdentifier: 
+  enemyType: 2
   enemyName: CicleEnemy
   maxHealth: 80
   attackDamage: 20
   attackRange: 1
   attackSpeed: 1.5
-  movementSpeed: 3
+  movementSpeed: 4
+  shootingMovementSpeed: 2

@@ -1,6 +1,7 @@
 
 using System;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour {
     private const string PICKAXE_BOOMERANG_TAG = "Pickaxe Boomerang";
@@ -37,10 +38,10 @@ public class PlayerController : MonoBehaviour {
         _primaryAttackDamage = _playerData.primaryAttackDamage;
         _secondaryAttackDamage = _playerData.secondaryAttackDamage;
     }
-
+   
     private void Update() {
+        // HandleMovement(_movement);
         _movement = GetNormalizedMovementInput();
-        //HandleMovement(_movement);
         if (Input.GetMouseButtonDown(0)) {
             Attack();
         }

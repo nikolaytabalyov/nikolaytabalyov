@@ -65,8 +65,8 @@ public class AISensor : MonoBehaviour {
                 targetCollider = targetColliderStart;
                 return true;
             } else {
-                targetCollider = null;
-                //targetCollider = GetComponent<Collider2D>();
+                //targetCollider = null;
+                targetCollider = GetComponent<Collider2D>();
                 return false;
             }
         } else {
