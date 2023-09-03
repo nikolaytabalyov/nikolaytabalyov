@@ -266,9 +266,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _detectRadius: 8
-  _attackRange: 3
+  _attackRange: 6
   _isTargetDetected: 0
   _isTargetOutOfAttackRange: 1
+  _enemy: {fileID: 0}
   _targetLayer:
     serializedVersion: 2
     m_Bits: 256

@@ -51,12 +51,10 @@ public class Enemy : MonoBehaviour {
 
     private void Enemy_OnTargetExitAttackRange(object sender, EventArgs e) {
         SwitchState(EnemyState.Chase);
-        Attack();
     }
 
     private void Enemy_OnTargetEnterAttackRange(object sender, EventArgs e) {
         SwitchState(EnemyState.Attack);
-        Attack();
     }
 
     private void Update() {
@@ -91,11 +89,13 @@ public class Enemy : MonoBehaviour {
         }
     }
     private void Enemy_OnTargetLost(object sender, EventArgs e) {
+        Debug.Log("Target lost");
         SwitchState(EnemyState.Idle);
     }
 
     private void Enemy_OnTargetDetected(object sender, AISensor.OnTargetDetectedEventArgs e) {
         _targetTransform = e.targetColliderArgs.transform;
+        Debug.Log("Target detected");
         _enemyState = EnemyState.Chase;
     }
     private void MoveTowardsTarget() {

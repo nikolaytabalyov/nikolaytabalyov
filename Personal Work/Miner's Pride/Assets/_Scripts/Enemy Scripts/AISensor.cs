@@ -21,12 +21,15 @@ public class AISensor : MonoBehaviour {
 
     #region Components
     [Header("Components")]
+    [SerializeField] private Enemy _enemy;
     [SerializeField] private LayerMask _targetLayer;
     [SerializeField] private LayerMask _obstacleLayer;
+    private Enemy.EnemyState _enemyState;
     #endregion
 
     #region Unity Methods
     private void Update() {
+        _enemyState = _enemy.GetEnemyState;
         if (CheckForTargetInDetectRange(out Collider2D targetCollider)) { 
             CheckIfTargetBehindObstacle(targetCollider, out RaycastHit2D hit);
             CheckForTargetInAttackRange();  

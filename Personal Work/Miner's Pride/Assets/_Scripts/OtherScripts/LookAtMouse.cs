@@ -14,7 +14,7 @@ public class LookAtMouse : MonoBehaviour {
     #endregion
     
     #region Unity Methods
-    private void LateUpdate() {
+    private void FixedUpdate() {
         // _mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         
         // _lookDirection = new Vector2(_mousePosition.x - transform.position.x, _mousePosition.y - transform.position.y);
