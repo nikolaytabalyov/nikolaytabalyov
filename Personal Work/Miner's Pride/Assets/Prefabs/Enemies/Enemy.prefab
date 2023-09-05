@@ -56,12 +56,16 @@ MonoBehaviour:
   _health: 0
   _attackSpeed: 0
   _shootingMovementSpeed: 0
+  _idleMovementSpeed: 1
   _enemyData: {fileID: 11400000, guid: 37740f7dd696ce04eab105193015a247, type: 2}
   _aiSensor: {fileID: 2835303775728159245}
   _targetTransform: {fileID: 0}
   _attackPoint: {fileID: 2544838111283506236}
   _enemyProjectilePrefab: {fileID: 3719001724328524654, guid: a392e8f2a27a4f846b5367d1ac6a61a5, type: 3}
-  _idleMovementSpeed: 1
+  _obstacleLayerMask:
+    serializedVersion: 2
+    m_Bits: 0
+  _enemyVisual: {fileID: 3497507964240812666}
 --- !u!58 &3473494258264644103
 CircleCollider2D:
   m_ObjectHideFlags: 0

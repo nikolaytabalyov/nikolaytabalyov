@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,24 +7,36 @@ public class SpawnManager : MonoBehaviour {
     #region Variables
     [Header("Variables")]
     private int _enemiesPerWave;
-
+    [SerializeField] private Vector2 _playerSpawnPoint = new(0, -6); 
+    [SerializeField] private float _timeBeforeWave = 3.0f;
     #endregion
     
     #region Components
     [Header("Components")]
     [SerializeField] private Transform[] _spawnPoints;
     [SerializeField] private GameObject[] _enemyPrefabs;
+    [SerializeField] private Transform _player;
+    private PlayerController _playerController;
     #endregion
     
     #region Unity Methods
     private void Start() {
         _enemiesPerWave = 3;
+        _playerController = _player.GetComponent<PlayerController>();
     }
     
     private void Update() {
         if (CheckForEnemyCount() == 0) {
-            StartWave();
-            _enemiesPerWave += 2;
+            _player.position = _playerSpawnPoint;
+            _playerController.enabled = false;
+            if (_timeBeforeWave <= 0) {
+                _timeBeforeWave = 3.0f;
+                _playerController.enabled = true;
+                StartWave();
+                _enemiesPerWave += 2;
+            } else {
+                _timeBeforeWave -= Time.deltaTime;
+            }
         }
     }
     #endregion
