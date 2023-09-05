@@ -1075,6 +1075,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26eb31c7481f0b848b6db13cc079039d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _playerSpawnPoint: {x: 0, y: -6}
+  _timeBeforeWave: 3
   _spawnPoints:
   - {fileID: 578676319}
   - {fileID: 1233325106}
@@ -1091,6 +1093,7 @@ MonoBehaviour:
   - {fileID: 807299285388115110, guid: 7ad41919b5c400c4a96ac51aedf68b11, type: 3}
   - {fileID: 974130529461581638, guid: 8b3ff1041f5cc534190068760f611125, type: 3}
   - {fileID: 8542427731525043885, guid: df732876422f7ed43b4a474ead1a4c1b, type: 3}
+  _player: {fileID: 1473443903}
 --- !u!4 &991959312
 Transform:
   m_ObjectHideFlags: 0
@@ -1853,7 +1856,7 @@ Transform:
   m_GameObject: {fileID: 1473443900}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -6.47, y: -5.32, z: 0}
+  m_LocalPosition: {x: 0, y: -6, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

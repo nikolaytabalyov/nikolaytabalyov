@@ -57,6 +57,7 @@ public class Enemy : MonoBehaviour {
     private Rigidbody2D _rb2D;
     private Collision2D _suicideAttackCollision;
     [SerializeField] private LayerMask _obstacleLayerMask;
+    [SerializeField] private Transform _enemyVisual;
     #endregion
 
     #region Unity Methods
@@ -113,6 +114,7 @@ public class Enemy : MonoBehaviour {
         if (_changeDirectionTimer <= 0f) {
             float randomDirection = UnityEngine.Random.Range(0f, 360f);
             transform.rotation = Quaternion.Euler(0f, 0f, randomDirection);
+            _enemyVisual.rotation = Quaternion.identity;
             _changeDirectionTimer = UnityEngine.Random.Range(2f, 4f);
         }
     }
@@ -195,9 +197,11 @@ public class Enemy : MonoBehaviour {
         if (hit.collider != null) {
             // Rotate away from the wall or enemy
             transform.rotation = Quaternion.LookRotation(Vector3.forward, hit.normal);
+            _enemyVisual.rotation = Quaternion.identity;
         } else {
             // Rotate 180 degrees if no obstacle is detected
             transform.rotation *= Quaternion.Euler(0, 0, 180);
+            _enemyVisual.rotation = Quaternion.identity;
         }
     }
 
