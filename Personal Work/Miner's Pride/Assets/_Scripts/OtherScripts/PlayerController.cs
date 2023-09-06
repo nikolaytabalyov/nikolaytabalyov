@@ -37,6 +37,7 @@ public class PlayerController : MonoBehaviour {
     [SerializeField] private Transform _pickaxeBoomerangPrefab;
     private PickaxeBoomerang _pickaxeBoomerangScript;
     private Rigidbody2D _rb;
+    private SpawnManager _spawnManager;
     #endregion
 
     #region Unity Methods
@@ -47,7 +48,18 @@ public class PlayerController : MonoBehaviour {
         _primaryAttackDamage = _playerData.primaryAttackDamage;
         _secondaryAttackDamage = _playerData.secondaryAttackDamage;
     }
-   
+    
+    private void Start() {
+        _spawnManager = SpawnManager.Instance;
+        _spawnManager.OnWaveStateChanged += PlayerController_OnWaveStateChanged;    
+    }
+
+    private void PlayerController_OnWaveStateChanged(object sender, SpawnManager.OnWaveOverEventArgs e) {
+        if (e.newWaveState == SpawnManager.WaveState.Running) {
+            _throwState = ThrowState.CanThrow;
+        }
+    }
+
     private void Update() {
         _movement = GetNormalizedMovementInput();
         HandleAttack();
@@ -65,6 +77,9 @@ public class PlayerController : MonoBehaviour {
             _rb.MovePosition(_rb.position + _movement * _speed * Time.fixedDeltaTime);
         }
     }
+    #endregion
+
+    #region Other Methods
     private void RangedAttack() {
         if (_throwState == ThrowState.CanThrow) {
             _pickaxeBoomerangScript.MaxDistance = _primaryAttackRange;
@@ -80,9 +95,6 @@ public class PlayerController : MonoBehaviour {
             _throwState = ThrowState.CannotThrow;
         }
     }
-    #endregion
-
-    #region Other Methods
     private void HandleDash() {
         if (Input.GetKeyDown(KeyCode.Space) && _canDash) {
             _isDashing = true;

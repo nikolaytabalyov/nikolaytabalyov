@@ -20,4 +20,4 @@ MonoBehaviour:
   attackSpeed: 1.5
   movementSpeed: 12
   shootingMovementSpeed: 4
-  idleMovementSpeed: 10
+  idleMovementSpeed: 750

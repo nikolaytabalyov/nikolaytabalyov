@@ -15,10 +15,21 @@ public class EnemyProjectile : MonoBehaviour {
     #endregion
     
     #region Components
-    //[Header("Components")]
+    [Header("Components")]
+    private SpawnManager _spawnManager;
     #endregion
-    
+    private void EnemyProjectile_OnWaveStateChanged(object sender, SpawnManager.OnWaveOverEventArgs e) {
+        if (e.newWaveState == SpawnManager.WaveState.Over && this != null) {
+            Destroy(gameObject);
+        }
+    }
+
     #region Unity Methods
+    private void Start() {
+        _spawnManager = SpawnManager.Instance;
+        _spawnManager.OnWaveStateChanged += EnemyProjectile_OnWaveStateChanged;
+    }
+
     private void Update() {
         transform.Translate(Vector3.up * _speed * Time.deltaTime);
     }

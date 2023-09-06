@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.UIElements.Experimental;
 
@@ -23,13 +24,22 @@ public class PickaxeBoomerang : MonoBehaviour {
     #region Components
     [Header("Components")]
     private Transform _player;
+    private SpawnManager _spawnManager;
     #endregion
+
+    private void PickaxeBoomerang_OnWaveStateChanged(object sender, SpawnManager.OnWaveOverEventArgs e) {
+        if (e.newWaveState == SpawnManager.WaveState.Over && this != null) {
+            Destroy(gameObject);
+        }
+    }
 
     #region Unity Methods
     private void Start() {
         _startPosition = transform.localPosition;
         _targetPosition = _startPosition + transform.up * _maxDistance;
         _player = GameObject.Find("Player").transform;
+        _spawnManager = SpawnManager.Instance;
+        _spawnManager.OnWaveStateChanged += PickaxeBoomerang_OnWaveStateChanged;
     }
 
     private void Update() {

@@ -120,7 +120,7 @@ public class Enemy : MonoBehaviour {
     }
 
     private void Wander() {
-        _rb2D.velocity = transform.up * _idleMovementSpeed;
+        _rb2D.velocity = transform.up * _idleMovementSpeed * Time.deltaTime;
     }
     private void SetEnemyAttackMethod() {
         switch(_enemyType) {
