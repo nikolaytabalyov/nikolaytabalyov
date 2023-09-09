@@ -1,0 +1,22 @@
+using UnityEngine;
+
+#ROOTNAMESPACEBEGIN#
+    public class #SCRIPTNAME# {
+        #NOTRIM#
+        #region Variables
+        #NOTRIM#
+        #endregion
+        #NOTRIM#
+        #region Constructor
+
+        public #SCRIPTNAME#() {
+            #NOTRIM#
+        }
+
+        #endregion
+        #NOTRIM#
+        #region Methods
+        #NOTRIM#
+        #endregion
+    }
+#ROOTNAMESPACEEND#

@@ -9,20 +9,30 @@ namespace NikolayTabalyov {
         private float _maxSpeed = 16;
         private float _torqueRange = 10;
         private float _ySpawnPosition = -2;
+        [SerializeField] private int _pointValue; 
+
         [Header("Components")]
         private Rigidbody targetRb;
+        private GameManager _gameManager = GameManager.Instance;
+        [SerializeField] private ParticleSystem _explosionParticle;
 
         private void Start() {
             targetRb = GetComponent<Rigidbody>();
             LaunchProp();
         }
 
-        private void OnMouseDown() {
-            Destroy(gameObject);
-        }
-
         private void OnTriggerEnter(Collider other) {
-            Destroy(gameObject);
+            if (other.CompareTag("Sensor")) {
+                Destroy(gameObject);
+                if (!gameObject.CompareTag("Bad")) {
+                    _gameManager.UpdateLives();
+                }
+            } else if (other.CompareTag("Trail") && _gameManager.GameState == GameManager.State.Running) {
+                Destroy(gameObject);
+                _gameManager.PlaySoundEffect(gameObject);
+                Instantiate(_explosionParticle, transform.position, _explosionParticle.transform.rotation);
+                _gameManager.UpdateScore(_pointValue);
+            }
         }
 
         private void LaunchProp() {
