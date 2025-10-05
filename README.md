@@ -3,11 +3,13 @@
 # Nikolay Tabalyov
 
 
-### I am studying Computer Science and participate in the IT Career Program.
+### I am studying Computer and Software Engineering at Technical University of Sofia and successfuly finished the IT Career Program.
 
 ## Skills and Experience
 
 - 🖥 C#
+- HTML
+- CSS
 
 [<img src='https://cdn.jsdelivr.net/npm/simple-icons@3.0.1/icons/github.svg' alt='github' height='40'>](https://github.com/nikolaytabalyov) [<img src='https://cdn.jsdelivr.net/npm/simple-icons@3.0.1/icons/twitter.svg' alt='twitter' height='40'>](https://twitter.com/nikolaytabalyov) [<img src='https://cdn.jsdelivr.net/npm/simple-icons@3.0.1/icons/reddit.svg' alt='Reddit' height='40'>](https://www.reddit.com/user/nikolaytabalyov)
 
