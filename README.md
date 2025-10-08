@@ -1,6 +1,3 @@
-<!-- Optional banner image -->
-<!-- You can upload one and use: ![Banner](banner-url-here) -->
-
 # 👋 Hi, I'm Nikolay Tabalyov
 
 🎓 **Computer and Software Engineering Student** @ *Technical University of Sofia*  
@@ -71,7 +68,5 @@ Unity course projects that explore fundamental game development principles.
 ---
 
 ### 🏗️ Future Plans
-*(You can update this section later.)*  
 - Build a personal portfolio website  
-- Explore backend frameworks and cloud platforms  
-- Contribute to open-source projects  
+- Explore backend frameworks and cloud platforms 
